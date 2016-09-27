@@ -1,0 +1,31 @@
+package com.gomoku.controller;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gomoku.model.Player;
+import com.gomoku.repository.PlayerRepository;
+
+@RequestMapping("player")
+@RestController
+public class PlayerController {
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @RequestMapping(method = POST)
+    public void storePlayer(@RequestBody final Player player) {
+        playerRepository.create(player);
+    }
+
+    @RequestMapping(value = "/{username}", method = GET)
+    public Player getPlayer(@PathVariable final String username) {
+        return playerRepository.get(username);
+    }
+}
