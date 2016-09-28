@@ -1,11 +1,21 @@
 package com.gomoku.repository;
 
-import com.gomoku.model.Player;
+import java.util.List;
 
+import com.gomoku.board.Player;
+
+/**
+ * Interface for player repository, it manages the players like create a new one, or retrieve all players.
+ *
+ * @author zeldan
+ *
+ */
 public interface PlayerRepository {
 
-    void create(final Player player);
+    void save(final Player player);
 
-    Player get(final String username);
+    Player find(final String username);
+
+    List<Player> findAll();
 
 }

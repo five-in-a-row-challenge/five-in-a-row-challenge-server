@@ -1,4 +1,4 @@
-package com.gomoku.model;
+package com.gomoku.board;
 
 public class Player {
 
@@ -8,7 +8,6 @@ public class Player {
 
     public Player() {
     }
-
 
     public String getUserName() {
         return userName;

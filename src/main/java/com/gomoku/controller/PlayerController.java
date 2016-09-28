@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gomoku.model.Player;
+import com.gomoku.board.Player;
 import com.gomoku.repository.PlayerRepository;
 
 @RequestMapping("player")
@@ -21,11 +21,11 @@ public class PlayerController {
 
     @RequestMapping(method = POST)
     public void storePlayer(@RequestBody final Player player) {
-        playerRepository.create(player);
+        playerRepository.save(player);
     }
 
     @RequestMapping(value = "/{username}", method = GET)
     public Player getPlayer(@PathVariable final String username) {
-        return playerRepository.get(username);
+        return playerRepository.find(username);
     }
 }
