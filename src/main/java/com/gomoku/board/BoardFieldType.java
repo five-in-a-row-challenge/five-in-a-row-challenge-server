@@ -7,7 +7,7 @@ package com.gomoku.board;
  * @author zeldan
  *
  */
-public enum BoardType {
+public enum BoardFieldType {
 
-    NONE, X, O
+    NONE, PLAYER_X, PLAYER_O
 }

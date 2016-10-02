@@ -1,7 +1,8 @@
 package com.gomoku.board;
 
-import static com.gomoku.board.BoardType.O;
-import static com.gomoku.board.BoardType.X;
+import static com.gomoku.board.BoardFieldType.PLAYER_O;
+import static com.gomoku.board.BoardFieldType.PLAYER_X;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -33,26 +34,26 @@ public class BoardTest {
         final Board board = new Board(1, 1);
 
         // WHEN
-        board.mark(1, 1, X);
+        board.mark(1, 1, PLAYER_X);
 
         // THEN
         assertTrue(board.isFull());
     }
 
     @Test
-    public void shouldNotBeFullifOneFieldIsMissingAndTheWidthAndHeightIsThree() {
+    public void shouldNotBeFullIfOneFieldIsMissingAndTheWidthAndHeightIsThree() {
         // GIVEN
         final Board board = new Board(3, 3);
 
         // WHEN
-        board.mark(1, 1, X);
-        board.mark(1, 2, O);
-        board.mark(1, 3, X);
-        board.mark(2, 1, O);
-        board.mark(2, 2, X);
-        board.mark(2, 3, O);
-        board.mark(3, 1, X);
-        board.mark(3, 2, O);
+        board.mark(1, 1, PLAYER_X);
+        board.mark(1, 2, PLAYER_O);
+        board.mark(1, 3, PLAYER_X);
+        board.mark(2, 1, PLAYER_O);
+        board.mark(2, 2, PLAYER_X);
+        board.mark(2, 3, PLAYER_O);
+        board.mark(3, 1, PLAYER_X);
+        board.mark(3, 2, PLAYER_O);
 
         // THEN
         assertFalse(board.isFull());
@@ -64,18 +65,82 @@ public class BoardTest {
         final Board board = new Board(3, 3);
 
         // WHEN
-        board.mark(1, 1, X);
-        board.mark(1, 2, O);
-        board.mark(1, 3, X);
-        board.mark(2, 1, O);
-        board.mark(2, 2, X);
-        board.mark(2, 3, O);
-        board.mark(3, 1, X);
-        board.mark(3, 2, O);
-        board.mark(3, 3, X);
+        board.mark(1, 1, PLAYER_X);
+        board.mark(1, 2, PLAYER_O);
+        board.mark(1, 3, PLAYER_X);
+        board.mark(2, 1, PLAYER_O);
+        board.mark(2, 2, PLAYER_X);
+        board.mark(2, 3, PLAYER_O);
+        board.mark(3, 1, PLAYER_X);
+        board.mark(3, 2, PLAYER_O);
+        board.mark(3, 3, PLAYER_X);
 
         // THEN
         assertTrue(board.isFull());
+    }
+
+    @Test
+    public void shouldNotBeWinnerHorizontallyIfOneFieldIsMissing() {
+        // GIVEN
+        final Board board = new Board(5, 5);
+
+        // WHEN
+        board.mark(5, 1, PLAYER_X);
+        board.mark(5, 2, PLAYER_X);
+        board.mark(5, 3, PLAYER_O);
+        board.mark(5, 4, PLAYER_X);
+        board.mark(5, 5, PLAYER_X);
+
+        // THEN
+        assertFalse(board.getWinner().isPresent());
+    }
+
+    @Test
+    public void shouldXBeTheWinnerHorizontally() {
+        // GIVEN
+        final Board board = new Board(5, 5);
+
+        // WHEN
+        board.mark(5, 1, PLAYER_X);
+        board.mark(5, 2, PLAYER_X);
+        board.mark(5, 3, PLAYER_X);
+        board.mark(5, 4, PLAYER_X);
+        board.mark(5, 5, PLAYER_X);
+
+        // THEN
+        assertEquals(PLAYER_X, board.getWinner().get());
+    }
+
+    @Test
+    public void shouldNotBeWinnerVerticallyIfOneFieldIsMissing() {
+        // GIVEN
+        final Board board = new Board(5, 5);
+
+        // WHEN
+        board.mark(1, 5, PLAYER_X);
+        board.mark(2, 5, PLAYER_X);
+        board.mark(3, 5, PLAYER_O);
+        board.mark(4, 5, PLAYER_X);
+        board.mark(5, 5, PLAYER_X);
+
+        // THEN
+        assertFalse(board.getWinner().isPresent());
+    }
+
+    @Test
+    public void shouldXBeTheWinnerVertically() {
+        // GIVEN
+        final Board board = new Board(5, 5);
+
+        // WHEN
+        board.mark(1, 5, PLAYER_X);
+        board.mark(2, 5, PLAYER_X);
+        board.mark(3, 5, PLAYER_X);
+        board.mark(4, 5, PLAYER_X);
+        board.mark(5, 5, PLAYER_X);
+
+        // THEN
+        assertEquals(PLAYER_X, board.getWinner().get());
     }
 
 }
