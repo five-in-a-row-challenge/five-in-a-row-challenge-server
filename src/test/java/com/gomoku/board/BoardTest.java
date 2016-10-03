@@ -16,10 +16,12 @@ import org.junit.Test;
  */
 public class BoardTest {
 
+    private static final int LIMIT_TO_WIN = 5;
+
     @Test
     public void shouldNotBeFullAfterInitialization() {
         // GIVEN
-        final Board board = new Board(1, 1);
+        final Board board = new Board(1, 1, LIMIT_TO_WIN);
 
         // WHEN
 
@@ -30,7 +32,7 @@ public class BoardTest {
     @Test
     public void shouldBeFullAfterMarkIfTheWidthAndHeightIsOne() {
         // GIVEN
-        final Board board = new Board(1, 1);
+        final Board board = new Board(1, 1, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(1, 1, PLAYER_X);
@@ -42,7 +44,7 @@ public class BoardTest {
     @Test
     public void shouldNotBeFullIfOneFieldIsMissingAndTheWidthAndHeightIsThree() {
         // GIVEN
-        final Board board = new Board(3, 3);
+        final Board board = new Board(3, 3, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(1, 1, PLAYER_X);
@@ -61,7 +63,7 @@ public class BoardTest {
     @Test
     public void shouldBeFullAfterMarkAllFieldsAndTheWidthAndHeightIsThree() {
         // GIVEN
-        final Board board = new Board(3, 3);
+        final Board board = new Board(3, 3, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(1, 1, PLAYER_X);
@@ -81,7 +83,7 @@ public class BoardTest {
     @Test
     public void shouldNotBeWinnerHorizontallyIfOneFieldIsMissing() {
         // GIVEN
-        final Board board = new Board(5, 5);
+        final Board board = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(5, 1, PLAYER_X);
@@ -97,7 +99,7 @@ public class BoardTest {
     @Test
     public void shouldXBeTheWinnerHorizontally() {
         // GIVEN
-        final Board board = new Board(5, 5);
+        final Board board = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(5, 1, PLAYER_X);
@@ -113,7 +115,7 @@ public class BoardTest {
     @Test
     public void shouldNotBeWinnerVerticallyIfOneFieldIsMissing() {
         // GIVEN
-        final Board board = new Board(5, 5);
+        final Board board = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(1, 5, PLAYER_X);
@@ -129,7 +131,7 @@ public class BoardTest {
     @Test
     public void shouldXBeTheWinnerVertically() {
         // GIVEN
-        final Board board = new Board(5, 5);
+        final Board board = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
         board.mark(1, 5, PLAYER_X);
