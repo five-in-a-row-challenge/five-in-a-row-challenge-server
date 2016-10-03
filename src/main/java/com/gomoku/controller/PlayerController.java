@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gomoku.board.Player;
+import com.gomoku.player.Player;
 import com.gomoku.repository.PlayerRepository;
 
 @RequestMapping("player")
