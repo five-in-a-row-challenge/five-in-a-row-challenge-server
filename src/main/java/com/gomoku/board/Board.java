@@ -35,8 +35,17 @@ public class Board {
         }
     }
 
-    public void mark(final int x, final int y, final BoardFieldType boardFieldType) {
-        table[x - 1][y - 1] = boardFieldType;
+    public Board(final int width, final int height, final int limitToWin, final BoardFieldType[][] table) {
+        this.width = width;
+        this.height = height;
+        this.limitToWin = limitToWin;
+        this.table = table;
+    }
+
+    public Board mark(final int x, final int y, final BoardFieldType boardFieldType) {
+        final BoardFieldType[][] deepCopyTable = stream(table).map(e -> e.clone()).toArray(BoardFieldType[][]::new);
+        deepCopyTable[x - 1][y - 1] = boardFieldType;
+        return new Board(width, height, limitToWin, deepCopyTable);
     }
 
     public boolean isFull() {
