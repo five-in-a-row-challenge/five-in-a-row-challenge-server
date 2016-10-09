@@ -144,4 +144,36 @@ public class BoardTest {
         assertEquals(PLAYER_X, actualBoard.getWinner().get());
     }
 
+    @Test
+    public void shouldNotBeWinnerHorizontallyIfTheCountIsNotInOneRow() {
+        // GIVEN
+        final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
+
+        // WHEN
+        Board actualBoard = firstBoard.mark(1, 3, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 4, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 5, PLAYER_X);
+        actualBoard = actualBoard.mark(2, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(2, 2, PLAYER_X);
+
+        // THEN
+        assertFalse(actualBoard.getWinner().isPresent());
+    }
+
+    @Test
+    public void shouldNotBeWinnerVerticallyIfTheCountIsNotInOneColumn() {
+        // GIVEN
+        final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
+
+        // WHEN
+        Board actualBoard = firstBoard.mark(3, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(4, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(5, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 2, PLAYER_X);
+        actualBoard = actualBoard.mark(2, 2, PLAYER_X);
+
+        // THEN
+        assertFalse(actualBoard.getWinner().isPresent());
+    }
+
 }

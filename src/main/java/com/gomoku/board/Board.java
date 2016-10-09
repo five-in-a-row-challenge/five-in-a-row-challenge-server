@@ -85,6 +85,7 @@ public class Board {
                     return true;
                 }
             }
+            actualCount = 0;
         }
         return false;
     }
@@ -98,6 +99,7 @@ public class Board {
                     return true;
                 }
             }
+            actualCount = 0;
         }
         return false;
     }
