@@ -1,0 +1,67 @@
+package com.gomoku.game;
+
+import static com.gomoku.board.BoardFieldType.PLAYER_O;
+import static com.gomoku.board.BoardFieldType.PLAYER_X;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import com.gomoku.board.Board;
+import com.gomoku.board.BoardFieldType;
+import com.gomoku.player.Player;
+
+/**
+ * Task for playing game between two players.
+ */
+public class GameTask {
+
+    private final int boardWidth;
+
+    private final int boardHeight;
+
+    private final int boardLimitToWin;
+
+    private final GameExecutorService gameService;
+
+    public GameTask(
+            @Value("${board.width}") final int boardWidth,
+            @Value("${board.height}") final int boardHeight,
+            @Value("${board.limitToWin}") final int boardLimitToWin,
+            @Autowired final GameExecutorService gameService) {
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        this.boardLimitToWin = boardLimitToWin;
+        this.gameService = gameService;
+    }
+
+    public GameTaskResult matchAgainstEachOther(final Player firstPlayer, final Player secondPlayer) {
+        final Map<BoardFieldType, Player> playersWithId = new HashMap<>();
+        playersWithId.put(PLAYER_O, firstPlayer);
+        playersWithId.put(PLAYER_X, secondPlayer);
+        Board board = new Board(boardWidth, boardHeight, boardLimitToWin);
+        GameState gameState = new GameState(playersWithId, board);
+        BoardFieldType actualPlayer = PLAYER_O;
+        while (boardIsNotFullAndThereIsNoWinner(board)) {
+            final Optional<GameState> newGameState = gameService.playOneRound(gameState, actualPlayer);
+            if (newGameState.isPresent()) {
+                gameState = newGameState.get();
+            }
+            board = newGameState.get().getBoard();
+            actualPlayer = changePlayer(actualPlayer);
+        }
+        return new GameTaskResult(board.getWinner());
+    }
+
+    private boolean boardIsNotFullAndThereIsNoWinner(final Board board) {
+        return !board.getWinner().isPresent() && !board.isFull();
+    }
+
+    private BoardFieldType changePlayer(final BoardFieldType actualPlayer) {
+        return PLAYER_O.equals(actualPlayer) ? PLAYER_X : PLAYER_O;
+    }
+
+}
