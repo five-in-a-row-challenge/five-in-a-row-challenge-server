@@ -31,16 +31,16 @@ import com.gomoku.player.Player;
  * Gomoku game service, it is responsible for execute one match on the board by the actual state of the game and actual player.
  */
 @Service
-public class GameService {
+public class GameExecutorService {
 
-    private static final Logger LOG = getLogger(GameService.class);
+    private static final Logger LOG = getLogger(GameExecutorService.class);
 
     private final ObjectMapper objectMapper;
 
     private final RestTemplate restTemplate;
 
     @Autowired
-    public GameService(final ObjectMapper objectMapper, final RestTemplate restTemplate) {
+    public GameExecutorService(final ObjectMapper objectMapper, final RestTemplate restTemplate) {
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;
     }

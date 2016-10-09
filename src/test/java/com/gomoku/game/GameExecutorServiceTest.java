@@ -28,9 +28,9 @@ import com.gomoku.board.BoardFieldType;
 import com.gomoku.player.Player;
 
 /**
- * Unit test for {@link GameService}.
+ * Unit test for {@link GameExecutorService}.
  */
-public class GameServiceTest {
+public class GameExecutorServiceTest {
 
     private static final String FIRST_PLAYER_ID = "Player1";
     private static final String FIRST_PLAYER_NETWORK_ADDRESS = "http://192.168.0.1:8080";
@@ -43,12 +43,12 @@ public class GameServiceTest {
     @Mock
     private RestTemplate restTemplateMock;
 
-    private GameService underTest;
+    private GameExecutorService underTest;
 
     @Before
     public void setUp() {
         initMocks(this);
-        underTest = new GameService(new ObjectMapper(), restTemplateMock);
+        underTest = new GameExecutorService(new ObjectMapper(), restTemplateMock);
     }
 
     @Test
