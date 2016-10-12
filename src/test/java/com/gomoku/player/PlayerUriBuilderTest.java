@@ -2,14 +2,14 @@ package com.gomoku.player;
 
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
 import static java.lang.String.valueOf;
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 import java.net.URI;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Unit test for {@link PlayerUriBuilder}.
@@ -24,7 +24,7 @@ public class PlayerUriBuilderTest {
 
     private PlayerUriBuilder underTest;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         underTest = new PlayerUriBuilder(BOARD_WIDTH, BOARD_HEIGHT);
     }
@@ -39,10 +39,10 @@ public class PlayerUriBuilderTest {
 
         // THEN
         final MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUri(uri).build().getQueryParams();
-        assertEquals(parameters.getFirst("width"), valueOf(BOARD_WIDTH));
-        assertEquals(parameters.getFirst("height"), valueOf(BOARD_HEIGHT));
-        assertEquals(parameters.getFirst("table"), actualTable);
-        assertEquals(parameters.getFirst("player"), PLAYER_X.toString());
+        assertEquals(valueOf(BOARD_WIDTH), parameters.getFirst("width"));
+        assertEquals(valueOf(BOARD_HEIGHT), parameters.getFirst("height"));
+        assertEquals(actualTable, parameters.getFirst("table"));
+        assertEquals(PLAYER_X.toString(), parameters.getFirst("player"));
 
     }
 

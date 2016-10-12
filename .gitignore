@@ -1,5 +1,6 @@
 .gradle
 /build/
+/test-output
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###

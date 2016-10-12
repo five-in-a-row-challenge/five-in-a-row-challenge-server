@@ -5,22 +5,22 @@ import static com.gomoku.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.of;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
@@ -47,7 +47,7 @@ public class GameTaskTest {
 
     private GameTask underTest;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         initMocks(this);
         underTest = new GameTask(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_THREE_TO_WIN, gameService);
@@ -97,8 +97,7 @@ public class GameTaskTest {
         // THEN
         final Optional<BoardFieldType> winner = gameTaskResult.getWinner();
         assertTrue(winner.isPresent());
-        assertEquals(PLAYER_X, winner.get());
-
+        assertEquals(winner.get(), PLAYER_X);
     }
 
 }

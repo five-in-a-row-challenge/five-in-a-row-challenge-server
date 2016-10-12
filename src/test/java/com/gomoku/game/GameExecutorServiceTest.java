@@ -2,25 +2,25 @@ package com.gomoku.game;
 
 import static com.gomoku.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.OK;
+import static org.testng.Assert.assertEquals;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gomoku.board.Board;
@@ -45,7 +45,7 @@ public class GameExecutorServiceTest {
 
     private GameExecutorService underTest;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         initMocks(this);
         underTest = new GameExecutorService(new ObjectMapper(), restTemplateMock);
@@ -64,8 +64,8 @@ public class GameExecutorServiceTest {
         final Optional<GameState> actualGameState = underTest.playOneRound(previousGameState, PLAYER_X);
 
         // THEN
-        assertEquals("NNNNNNNNN", previousGameState.getBoard().toString());
-        assertEquals("NNXNNNNNN", actualGameState.get().getBoard().toString());
+        assertEquals(previousGameState.getBoard().toString(), "NNNNNNNNN");
+        assertEquals(actualGameState.get().getBoard().toString(), "NNXNNNNNN");
     }
 
     private Map<BoardFieldType, Player> initPlayers() {

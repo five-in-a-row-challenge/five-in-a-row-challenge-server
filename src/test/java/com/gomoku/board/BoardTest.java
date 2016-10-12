@@ -2,11 +2,11 @@ package com.gomoku.board;
 
 import static com.gomoku.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * Unit test for {@link Board}.
@@ -21,9 +21,9 @@ public class BoardTest {
     @Test
     public void shouldNotBeFullAfterInitialization() {
         // GIVEN
-        final Board board = new Board(1, 1, LIMIT_TO_WIN);
 
         // WHEN
+        final Board board = new Board(1, 1, LIMIT_TO_WIN);
 
         // THEN
         assertFalse(board.isFull());
@@ -109,7 +109,7 @@ public class BoardTest {
         actualBoard = actualBoard.mark(5, 5, PLAYER_X);
 
         // THEN
-        assertEquals(PLAYER_X, actualBoard.getWinner().get());
+        assertEquals(actualBoard.getWinner().get(), PLAYER_X);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class BoardTest {
         actualBoard = actualBoard.mark(5, 5, PLAYER_X);
 
         // THEN
-        assertEquals(PLAYER_X, actualBoard.getWinner().get());
+        assertEquals(actualBoard.getWinner().get(), PLAYER_X);
     }
 
     @Test
