@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
@@ -17,6 +18,7 @@ import com.gomoku.player.Player;
 /**
  * Task for playing game between two players.
  */
+@Component
 public class GameTask {
 
     private final int boardWidth;

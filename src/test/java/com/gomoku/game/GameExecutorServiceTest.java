@@ -9,6 +9,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.OK;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -65,6 +66,7 @@ public class GameExecutorServiceTest {
 
         // THEN
         assertEquals(previousGameState.getBoard().toString(), "NNNNNNNNN");
+        assertTrue(actualGameState.isPresent());
         assertEquals(actualGameState.get().getBoard().toString(), "NNXNNNNNN");
     }
 

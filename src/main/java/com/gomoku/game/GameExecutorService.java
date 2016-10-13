@@ -1,10 +1,12 @@
 package com.gomoku.game;
 
+import static com.gomoku.player.PlayerUriBuilder.buildUri;
+import static java.util.Arrays.asList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.io.IOException;
 import java.net.URI;
@@ -48,7 +50,7 @@ public class GameExecutorService {
     public Optional<GameState> playOneRound(final GameState gameState, final BoardFieldType actualPlayer) {
         final Player player = gameState.getPlayers().get(actualPlayer);
         final Board board = gameState.getBoard();
-        final URI playerURI = gameState.getPlayerUriBuilder().buildUri(player.getNetworkAddress(), board.toString(), actualPlayer);
+        final URI playerURI = buildUri(player.getNetworkAddress(), board, actualPlayer);
         final HttpEntity<String> userResponse = executeURI(playerURI);
         final Map<String, Integer> readValue = getValueFromUserResponse(userResponse.getBody());
         if (!readValue.isEmpty()) {
@@ -62,7 +64,7 @@ public class GameExecutorService {
         return restTemplate.exchange(
                 playerURI,
                 GET,
-                new HttpEntity<>(getHttpEntity()),
+                getHttpEntity(),
                 String.class);
     }
 
@@ -76,10 +78,10 @@ public class GameExecutorService {
         return Collections.<String, Integer> emptyMap();
     }
 
-    private HttpHeaders getHttpEntity() {
+    private HttpEntity<Object> getHttpEntity() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", APPLICATION_JSON_VALUE);
-        return headers;
+        headers.setAccept(asList(APPLICATION_JSON));
+        return new HttpEntity<>(headers);
     }
 
 }

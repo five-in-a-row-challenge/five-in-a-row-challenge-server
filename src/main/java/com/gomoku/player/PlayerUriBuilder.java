@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
 
 /**
@@ -12,22 +13,17 @@ import com.gomoku.board.BoardFieldType;
  * @author zeldan
  *
  */
-public class PlayerUriBuilder {
+public final class PlayerUriBuilder {
 
-    private final int boardWidth;
+    private PlayerUriBuilder() {
 
-    private final int boardHeight;
-
-    public PlayerUriBuilder(final int boardWidth, final int boardHeight) {
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
     }
 
-    public URI buildUri(final String baseUrl, final String table, final BoardFieldType boardFieldType) {
+    public static URI buildUri(final String baseUrl, final Board board, final BoardFieldType boardFieldType) {
         final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("width", boardWidth)
-                .queryParam("height", boardHeight)
-                .queryParam("table", table)
+                .queryParam("width", board.getWidth())
+                .queryParam("height", board.getHeight())
+                .queryParam("table", board.toString())
                 .queryParam("player", boardFieldType);
         return builder.build().encode().toUri();
     }

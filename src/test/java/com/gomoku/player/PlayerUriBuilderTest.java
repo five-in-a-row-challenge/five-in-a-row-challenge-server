@@ -8,8 +8,9 @@ import java.net.URI;
 
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.gomoku.board.Board;
 
 /**
  * Unit test for {@link PlayerUriBuilder}.
@@ -22,27 +23,20 @@ public class PlayerUriBuilderTest {
     private static final int BOARD_WIDTH = 2;
     private static final int BOARD_HEIGHT = 3;
 
-    private PlayerUriBuilder underTest;
-
-    @BeforeMethod
-    public void setUp() {
-        underTest = new PlayerUriBuilder(BOARD_WIDTH, BOARD_HEIGHT);
-    }
-
     @Test
     public void shouldBuildProperUriByParameters() {
         // GIVEN
-        final String actualTable = "NNXNNO";
+        final Board board = new Board(BOARD_WIDTH, BOARD_HEIGHT, 1);
 
         // WHEN
-        final URI uri = underTest.buildUri("http://computer:8080", actualTable, PLAYER_X);
+        final URI uri = PlayerUriBuilder.buildUri("http://computer:8080", board, PLAYER_X);
 
         // THEN
         final MultiValueMap<String, String> parameters = UriComponentsBuilder.fromUri(uri).build().getQueryParams();
-        assertEquals(valueOf(BOARD_WIDTH), parameters.getFirst("width"));
-        assertEquals(valueOf(BOARD_HEIGHT), parameters.getFirst("height"));
-        assertEquals(actualTable, parameters.getFirst("table"));
-        assertEquals(PLAYER_X.toString(), parameters.getFirst("player"));
+        assertEquals(parameters.getFirst("width"), valueOf(BOARD_WIDTH));
+        assertEquals(parameters.getFirst("height"), valueOf(BOARD_HEIGHT));
+        assertEquals(parameters.getFirst("table").length(), BOARD_WIDTH * BOARD_HEIGHT);
+        assertEquals(parameters.getFirst("player"), PLAYER_X.toString());
 
     }
 
