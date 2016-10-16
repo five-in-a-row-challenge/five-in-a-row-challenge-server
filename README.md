@@ -14,8 +14,10 @@ The server plays "five-in-a-row" games in every minutes, and call the players vi
 ## How to start the server
 - gradlew bootRun
 
-## How to play game (with examples)
-TODO
+## How to play game
+TODO: create a long description
+
+![alt text](https://github.com/zeldan/five-in-a-row-challenge/blob/master/FiveInARowSequence.png "Five in a row sequence diagram")
 
 ## Technology Stack
 - Java 8
