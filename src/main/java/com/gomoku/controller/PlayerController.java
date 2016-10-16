@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gomoku.player.Player;
 import com.gomoku.repository.PlayerRepository;
 
+/**
+ * Rest controller to handle players.
+ *
+ * @author zeldan
+ *
+ */
 @RequestMapping("player")
 @RestController
 public class PlayerController {
