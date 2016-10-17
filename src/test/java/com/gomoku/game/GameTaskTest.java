@@ -14,6 +14,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.mockito.InOrder;
@@ -24,6 +25,7 @@ import org.testng.annotations.Test;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
+import com.gomoku.history.HistoryStep;
 import com.gomoku.player.Player;
 
 /**
@@ -69,7 +71,7 @@ public class GameTaskTest {
         final GameState gameStateWithNotFullBoard = new GameState(emptyMap(), notFullBoard);
         when(gameService.playOneRound(any(GameState.class), eq(PLAYER_O))).thenReturn(of(gameStateWithNotFullBoard));
         when(gameService.playOneRound(eq(gameStateWithNotFullBoard), eq(PLAYER_X))).thenReturn(of(gameStateWithNotFullBoard));
-        when(gameService.playOneRound(eq(gameStateWithNotFullBoard), Mockito.eq(PLAYER_O))).thenReturn(of(new GameState(emptyMap(), fullBoard)));
+        when(gameService.playOneRound(eq(gameStateWithNotFullBoard), eq(PLAYER_O))).thenReturn(of(new GameState(emptyMap(), fullBoard)));
 
         // WHEN
         final GameTaskResult gameTaskResult = underTest.matchAgainstEachOther(FIRST_PLAYER, SECOND_PLAYER);
@@ -98,6 +100,38 @@ public class GameTaskTest {
         final Optional<BoardFieldType> winner = gameTaskResult.getWinner();
         assertTrue(winner.isPresent());
         assertEquals(winner.get(), PLAYER_X);
+    }
+
+    @Test
+    public void shouldStoreHistoryAboutEverySteps() {
+        // GIVEN
+        final Board notFullBoard = new Board(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_THREE_TO_WIN, new BoardFieldType[][] {
+                { PLAYER_X, PLAYER_O },
+                { PLAYER_O, NONE }
+        });
+        final Board fullBoard = new Board(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_THREE_TO_WIN, new BoardFieldType[][] {
+                { PLAYER_X, PLAYER_O },
+                { PLAYER_O, PLAYER_X }
+        });
+
+        final GameState gameStateWithNotFullBoard = new GameState(emptyMap(), notFullBoard);
+        when(gameService.playOneRound(any(GameState.class), eq(PLAYER_O))).thenReturn(of(gameStateWithNotFullBoard));
+        when(gameService.playOneRound(eq(gameStateWithNotFullBoard), Mockito.eq(PLAYER_X))).thenReturn(of(new GameState(emptyMap(), fullBoard)));
+
+        // WHEN
+        final GameTaskResult gameTaskResult = underTest.matchAgainstEachOther(FIRST_PLAYER, SECOND_PLAYER);
+
+        // THEN
+        final List<HistoryStep> steps = gameTaskResult.getSteps();
+        assertEquals(steps.size(), 2);
+        assertHistoryStep(steps.get(0), 1, "XOON");
+        assertHistoryStep(steps.get(1), 2, "XOOX");
+    }
+
+    private void assertHistoryStep(final HistoryStep historyStep, final int numberOfStep, final String actualBoard) {
+        assertEquals(historyStep.getNumberOfStep(), numberOfStep);
+        assertEquals(historyStep.getBoard(), actualBoard);
+
     }
 
 }

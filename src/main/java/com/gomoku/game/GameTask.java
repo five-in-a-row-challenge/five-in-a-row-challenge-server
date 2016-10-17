@@ -3,7 +3,9 @@ package com.gomoku.game;
 import static com.gomoku.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
+import com.gomoku.history.HistoryStep;
 import com.gomoku.player.Player;
 
 /**
@@ -41,12 +44,12 @@ public class GameTask {
     }
 
     public GameTaskResult matchAgainstEachOther(final Player firstPlayer, final Player secondPlayer) {
-        final Map<BoardFieldType, Player> playersWithId = new HashMap<>();
-        playersWithId.put(PLAYER_O, firstPlayer);
-        playersWithId.put(PLAYER_X, secondPlayer);
+        final List<HistoryStep> steps = new ArrayList<>();
+        final Map<BoardFieldType, Player> playersWithId = createPlayersType(firstPlayer, secondPlayer);
         Board board = new Board(boardWidth, boardHeight, boardLimitToWin);
         GameState gameState = new GameState(playersWithId, board);
         BoardFieldType actualPlayer = PLAYER_O;
+        int numberOfStep = 0;
         while (boardIsNotFullAndThereIsNoWinner(board)) {
             final Optional<GameState> newGameState = gameService.playOneRound(gameState, actualPlayer);
             if (newGameState.isPresent()) {
@@ -54,8 +57,16 @@ public class GameTask {
             }
             board = newGameState.get().getBoard();
             actualPlayer = changePlayer(actualPlayer);
+            steps.add(new HistoryStep(++numberOfStep, board.toString()));
         }
-        return new GameTaskResult(board.getWinner());
+        return new GameTaskResult(board.getWinner(), steps);
+    }
+
+    private Map<BoardFieldType, Player> createPlayersType(final Player firstPlayer, final Player secondPlayer) {
+        final Map<BoardFieldType, Player> playersWithId = new HashMap<>();
+        playersWithId.put(PLAYER_O, firstPlayer);
+        playersWithId.put(PLAYER_X, secondPlayer);
+        return playersWithId;
     }
 
     private boolean boardIsNotFullAndThereIsNoWinner(final Board board) {

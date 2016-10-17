@@ -1,5 +1,6 @@
 package com.gomoku.game;
 
+import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     @Test
     public void shoudPlayMatchToEveryOneWithEveryOne() {
         // GIVEN
-        final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null));
+        final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
         final Player firstPlayer = new Player("player1", "http://localhost:8080");
         final Player secondPlayer = new Player("player2", "http://localhost:8081");
