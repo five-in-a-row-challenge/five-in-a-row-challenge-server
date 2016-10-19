@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration class for scheduler executor service.
+ * Configuration class for setting scheduler executor service.
+ *
+ * @author zeldan
+ *
  */
 @Configuration
 public class SchedulerConfig {

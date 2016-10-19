@@ -1,5 +1,11 @@
 package com.gomoku.history;
 
+/**
+ * Stores actual state of the board.
+ *
+ * @author zeldan
+ *
+ */
 public class HistoryStep {
 
     private final int numberOfStep;

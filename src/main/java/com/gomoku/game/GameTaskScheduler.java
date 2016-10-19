@@ -18,6 +18,12 @@ import com.gomoku.board.BoardFieldType;
 import com.gomoku.player.Player;
 import com.gomoku.repository.PlayerRepository;
 
+/**
+ * Scheduler service to start and schedule games between every players in the given time period.
+ *
+ * @author zeldan
+ *
+ */
 @Service
 public class GameTaskScheduler {
 
@@ -51,9 +57,10 @@ public class GameTaskScheduler {
     public void startAndScheduleGames() {
         final List<Player> players = playerRepository.findAll();
         final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), lengthOfTheGameInMinutes, MINUTES);
+        int round = 1;
         while (!countdown.isDone()) {
             try {
-                startRound(players);
+                startRound(round++, players);
                 sleep(lengthOfOneRoundInMinutes * ONE_MINUTE_IN_MILLISEC);
             } catch (final InterruptedException e) {
                 LOG.warn("The game is interrupted.");
@@ -62,18 +69,19 @@ public class GameTaskScheduler {
         scheduler.shutdown();
     }
 
-    private void startRound(final List<Player> players) {
+    private void startRound(final int round, final List<Player> players) {
+        LOG.info("The round '{}' is started.", round);
         players.forEach(playerOne -> {
             players.forEach(playerTwo -> {
                 if (!playerOne.equals(playerTwo)) {
+                    LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<BoardFieldType> winner = gameTaskResult.getWinner();
                     if (winner.isPresent()) {
-                        LOG.info("The winner is: " + winner.get());
+                        LOG.info("------ The winner is: " + winner.get());
                     } else {
-                        LOG.info("The game is draw.");
+                        LOG.info("------ The game is draw.");
                     }
-
                 }
             });
         });

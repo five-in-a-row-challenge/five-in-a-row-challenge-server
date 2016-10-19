@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.game.GameTaskScheduler;
 
+/**
+ * Rest controller to handle game actions.
+ *
+ * @author zeldan
+ *
+ */
 @RequestMapping("game")
 @RestController
 public class GameController {
