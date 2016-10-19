@@ -2,6 +2,8 @@ package com.gomoku.game;
 
 import static com.gomoku.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +61,15 @@ public class GameTask {
             actualPlayer = changePlayer(actualPlayer);
             steps.add(new HistoryStep(++numberOfStep, board.toString()));
         }
-        return new GameTaskResult(board.getWinner(), steps);
+        return new GameTaskResult(getWinnerPlayer(playersWithId, board.getWinner()), steps);
+    }
+
+    private Optional<Player> getWinnerPlayer(final Map<BoardFieldType, Player> playersWithId, final Optional<BoardFieldType> winnerField) {
+        if (winnerField.isPresent()) {
+            return of(playersWithId.get(winnerField.get()));
+        } else {
+            return empty();
+        }
     }
 
     private Map<BoardFieldType, Player> createPlayersType(final Player firstPlayer, final Player secondPlayer) {

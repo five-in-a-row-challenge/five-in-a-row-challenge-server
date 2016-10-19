@@ -2,8 +2,8 @@
 
 Five in a row challenge
 =======================
-The **Five in a row challenge** is a multiplayer REST games, for practicing writing a proper REST endpoint with a getting better gomoku A.I.. 
-You have to hurry, because the server plays games in every minute, and you can miss valuable points.
+The **Five in a row challenge** is a multiplayer REST game, for practicing writing a proper REST endpoint with a getting better gomoku A.I.. 
+You have to hurry, because the server plays game in every minute, and you can miss valuable points.
 This is the main application for playing **Five in a row challenge**.
 This server handles all incoming requests and responses, and save the actual state of the board of every games.
 

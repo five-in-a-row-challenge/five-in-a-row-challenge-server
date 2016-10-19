@@ -97,9 +97,9 @@ public class GameTaskTest {
         final GameTaskResult gameTaskResult = underTest.matchAgainstEachOther(FIRST_PLAYER, SECOND_PLAYER);
 
         // THEN
-        final Optional<BoardFieldType> winner = gameTaskResult.getWinner();
+        final Optional<Player> winner = gameTaskResult.getWinner();
         assertTrue(winner.isPresent());
-        assertEquals(winner.get(), PLAYER_X);
+        assertEquals(winner.get(), SECOND_PLAYER);
     }
 
     @Test

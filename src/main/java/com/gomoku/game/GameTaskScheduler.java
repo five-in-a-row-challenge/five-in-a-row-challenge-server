@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.gomoku.board.BoardFieldType;
 import com.gomoku.player.Player;
 import com.gomoku.repository.PlayerRepository;
 
@@ -76,7 +75,7 @@ public class GameTaskScheduler {
                 if (!playerOne.equals(playerTwo)) {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
-                    final Optional<BoardFieldType> winner = gameTaskResult.getWinner();
+                    final Optional<Player> winner = gameTaskResult.getWinner();
                     if (winner.isPresent()) {
                         LOG.info("------ The winner is: " + winner.get());
                     } else {
