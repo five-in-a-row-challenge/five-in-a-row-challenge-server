@@ -31,6 +31,9 @@ import com.gomoku.player.Player;
 
 /**
  * Gomoku game service, it is responsible for execute one match on the board by the actual state of the game and actual player.
+ *
+ * @author zeldan
+ *
  */
 @Service
 public class GameExecutorService {

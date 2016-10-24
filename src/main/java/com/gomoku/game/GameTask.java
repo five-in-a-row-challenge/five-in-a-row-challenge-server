@@ -22,6 +22,9 @@ import com.gomoku.player.Player;
 
 /**
  * Task for playing game between two players.
+ *
+ * @author zeldan
+ *
  */
 @Component
 public class GameTask {

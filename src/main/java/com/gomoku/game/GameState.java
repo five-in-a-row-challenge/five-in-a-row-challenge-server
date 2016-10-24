@@ -8,6 +8,9 @@ import com.gomoku.player.Player;
 
 /**
  * Actual state of the game.
+ *
+ * @author zeldan
+ *
  */
 public class GameState {
 

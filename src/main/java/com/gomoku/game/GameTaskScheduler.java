@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.gomoku.history.History;
 import com.gomoku.player.Player;
 import com.gomoku.repository.HistoryRepository;
-import com.gomoku.repository.PlayerRepository;
 
 /**
  * Scheduler service to start and schedule games between every players in the given time period.
@@ -34,8 +33,6 @@ public class GameTaskScheduler {
 
     private final GameTask gameTask;
 
-    private final PlayerRepository playerRepository;
-
     private final HistoryRepository historyRepository;
 
     private final ScheduledExecutorService scheduler;
@@ -46,21 +43,19 @@ public class GameTaskScheduler {
 
     public GameTaskScheduler(
             @Autowired final GameTask gameTask,
-            @Autowired final PlayerRepository playerRepository,
             @Autowired final HistoryRepository historyRepository,
             @Autowired final ScheduledExecutorService scheduler,
             @Value("${game.lengthOfOneRoundInMinutes}") final int lengthOfOneRoundInMinutes,
             @Value("${game.lengthOfTheGameInMinutes}") final int lengthOfTheGameInMinutes) {
         this.gameTask = gameTask;
-        this.playerRepository = playerRepository;
         this.historyRepository = historyRepository;
         this.scheduler = scheduler;
         this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
     }
 
-    public void startAndScheduleGames() {
-        final List<Player> players = playerRepository.findAll();
+    public void startAndScheduleGames(final List<Player> players) {
+
         final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), lengthOfTheGameInMinutes, MINUTES);
         int round = 1;
         while (!countdown.isDone()) {

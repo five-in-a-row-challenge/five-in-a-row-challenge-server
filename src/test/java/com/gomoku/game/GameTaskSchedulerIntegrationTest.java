@@ -1,5 +1,6 @@
 package com.gomoku.game;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static org.mockito.Mockito.verify;
@@ -21,7 +22,6 @@ import org.testng.annotations.Test;
 import com.gomoku.history.History;
 import com.gomoku.player.Player;
 import com.gomoku.repository.HistoryRepository;
-import com.gomoku.repository.PlayerRepository;
 
 /**
  * Unit test for {@link GameTaskScheduler}.
@@ -36,9 +36,6 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     private GameTask gameTask;
 
     @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
     private HistoryRepository historyRepository;
 
     @Autowired
@@ -49,7 +46,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        underTest = new GameTaskScheduler(gameTask, playerRepository, historyRepository, scheduler, LENGTH_OF_ONE_ROUND_IN_MINUTES,
+        underTest = new GameTaskScheduler(gameTask, historyRepository, scheduler, LENGTH_OF_ONE_ROUND_IN_MINUTES,
                 LENGTH_OF_THE_GAME_IN_MINUTES);
         historyRepository.deleteAll();
     }
@@ -61,11 +58,9 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
         final Player firstPlayer = new Player("player1", "http://localhost:8080");
         final Player secondPlayer = new Player("player2", "http://localhost:8081");
-        playerRepository.save(firstPlayer);
-        playerRepository.save(secondPlayer);
 
         // WHEN
-        underTest.startAndScheduleGames();
+        underTest.startAndScheduleGames(asList(firstPlayer, secondPlayer));
 
         // THEN
         verify(gameTask).matchAgainstEachOther(firstPlayer, secondPlayer);
@@ -79,11 +74,9 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
         final Player firstPlayer = new Player("player1", "http://localhost:8080");
         final Player secondPlayer = new Player("player2", "http://localhost:8081");
-        playerRepository.save(firstPlayer);
-        playerRepository.save(secondPlayer);
 
         // WHEN
-        underTest.startAndScheduleGames();
+        underTest.startAndScheduleGames(asList(firstPlayer, secondPlayer));
 
         // THEN
         final List<History> histories = historyRepository.findAll();
