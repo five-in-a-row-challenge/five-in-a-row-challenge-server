@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.gomoku.player.Player;
 import com.gomoku.repository.PlayerRepository;
@@ -16,7 +16,7 @@ import com.gomoku.repository.PlayerRepository;
  * @author zeldan
  *
  */
-@Service
+@Repository
 public class InMemoryPlayerRepository implements PlayerRepository {
 
     private static final Map<String, Player> PLAYERS = new HashMap<>();

@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.gomoku.history.History;
 import com.gomoku.player.Player;
+import com.gomoku.repository.HistoryRepository;
 import com.gomoku.repository.PlayerRepository;
 
 /**
@@ -34,6 +36,8 @@ public class GameTaskScheduler {
 
     private final PlayerRepository playerRepository;
 
+    private final HistoryRepository historyRepository;
+
     private final ScheduledExecutorService scheduler;
 
     private final int lengthOfOneRoundInMinutes;
@@ -43,11 +47,13 @@ public class GameTaskScheduler {
     public GameTaskScheduler(
             @Autowired final GameTask gameTask,
             @Autowired final PlayerRepository playerRepository,
+            @Autowired final HistoryRepository historyRepository,
             @Autowired final ScheduledExecutorService scheduler,
             @Value("${game.lengthOfOneRoundInMinutes}") final int lengthOfOneRoundInMinutes,
             @Value("${game.lengthOfTheGameInMinutes}") final int lengthOfTheGameInMinutes) {
         this.gameTask = gameTask;
         this.playerRepository = playerRepository;
+        this.historyRepository = historyRepository;
         this.scheduler = scheduler;
         this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
@@ -65,7 +71,6 @@ public class GameTaskScheduler {
                 LOG.warn("The game is interrupted.");
             }
         }
-        scheduler.shutdown();
     }
 
     private void startRound(final int round, final List<Player> players) {
@@ -76,11 +81,13 @@ public class GameTaskScheduler {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
+                    final Long historyId = historyRepository.save(new History(round, playerOne, playerTwo, winner, gameTaskResult.getSteps()));
                     if (winner.isPresent()) {
                         LOG.info("------ The winner is: " + winner.get());
                     } else {
                         LOG.info("------ The game is draw.");
                     }
+                    LOG.info("------ The id of history is: " + historyId);
                 }
             });
         });
