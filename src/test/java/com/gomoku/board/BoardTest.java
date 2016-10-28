@@ -86,11 +86,11 @@ public class BoardTest {
         final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
-        Board actualBoard = firstBoard.mark(5, 1, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 2, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 3, PLAYER_O);
-        actualBoard = actualBoard.mark(5, 4, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 5, PLAYER_X);
+        Board actualBoard = firstBoard.mark(1, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(2, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(3, 1, PLAYER_O);
+        actualBoard = actualBoard.mark(4, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(5, 1, PLAYER_X);
 
         // THEN
         assertFalse(actualBoard.getWinner().isPresent());
@@ -102,11 +102,11 @@ public class BoardTest {
         final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
-        Board actualBoard = firstBoard.mark(5, 1, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 2, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 3, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 4, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 5, PLAYER_X);
+        Board actualBoard = firstBoard.mark(1, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(2, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(3, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(4, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(5, 1, PLAYER_X);
 
         // THEN
         assertEquals(actualBoard.getWinner().get(), PLAYER_X);
@@ -118,11 +118,11 @@ public class BoardTest {
         final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
-        Board actualBoard = firstBoard.mark(1, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(2, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(3, 5, PLAYER_O);
-        actualBoard = actualBoard.mark(4, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 5, PLAYER_X);
+        Board actualBoard = firstBoard.mark(1, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 2, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 3, PLAYER_O);
+        actualBoard = actualBoard.mark(1, 4, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 5, PLAYER_X);
 
         // THEN
         assertFalse(actualBoard.getWinner().isPresent());
@@ -134,11 +134,11 @@ public class BoardTest {
         final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
-        Board actualBoard = firstBoard.mark(1, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(2, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(3, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(4, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 5, PLAYER_X);
+        Board actualBoard = firstBoard.mark(1, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 2, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 3, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 4, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 5, PLAYER_X);
 
         // THEN
         assertEquals(actualBoard.getWinner().get(), PLAYER_X);
@@ -150,11 +150,12 @@ public class BoardTest {
         final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
-        Board actualBoard = firstBoard.mark(1, 3, PLAYER_X);
-        actualBoard = actualBoard.mark(1, 4, PLAYER_X);
-        actualBoard = actualBoard.mark(1, 5, PLAYER_X);
-        actualBoard = actualBoard.mark(2, 1, PLAYER_X);
+        Board actualBoard = firstBoard.mark(3, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(4, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(5, 1, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 2, PLAYER_X);
         actualBoard = actualBoard.mark(2, 2, PLAYER_X);
+
 
         // THEN
         assertFalse(actualBoard.getWinner().isPresent());
@@ -166,10 +167,10 @@ public class BoardTest {
         final Board firstBoard = new Board(5, 5, LIMIT_TO_WIN);
 
         // WHEN
-        Board actualBoard = firstBoard.mark(3, 1, PLAYER_X);
-        actualBoard = actualBoard.mark(4, 1, PLAYER_X);
-        actualBoard = actualBoard.mark(5, 1, PLAYER_X);
-        actualBoard = actualBoard.mark(1, 2, PLAYER_X);
+        Board actualBoard = firstBoard.mark(1, 3, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 4, PLAYER_X);
+        actualBoard = actualBoard.mark(1, 5, PLAYER_X);
+        actualBoard = actualBoard.mark(2, 1, PLAYER_X);
         actualBoard = actualBoard.mark(2, 2, PLAYER_X);
 
         // THEN

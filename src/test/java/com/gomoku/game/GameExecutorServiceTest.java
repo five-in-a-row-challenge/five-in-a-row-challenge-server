@@ -55,7 +55,7 @@ public class GameExecutorServiceTest {
     @Test
     public void shouldMoveToNextGameStateByUserResponse() {
         // GIVEN
-        final ResponseEntity<String> userAnswerResponse = createUserAnswerResponse(ROW_NUMBER_TO_MARK, COLUMN_NUMBER_TO_MARK);
+        final ResponseEntity<String> userAnswerResponse = createUserAnswerResponse(COLUMN_NUMBER_TO_MARK, ROW_NUMBER_TO_MARK);
         when(restTemplateMock.exchange(any(URI.class), eq(GET), any(HttpEntity.class), eq(String.class)))
                 .thenReturn(userAnswerResponse);
         final Map<BoardFieldType, Player> players = initPlayers();

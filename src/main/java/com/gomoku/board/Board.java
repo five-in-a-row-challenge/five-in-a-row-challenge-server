@@ -44,7 +44,7 @@ public class Board {
 
     public Board mark(final int x, final int y, final BoardFieldType boardFieldType) {
         final BoardFieldType[][] deepCopyTable = stream(table).map(e -> e.clone()).toArray(BoardFieldType[][]::new);
-        deepCopyTable[x - 1][y - 1] = boardFieldType;
+        deepCopyTable[y - 1][x - 1] = boardFieldType;
         return new Board(width, height, limitToWin, deepCopyTable);
     }
 
