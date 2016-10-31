@@ -16,7 +16,7 @@ import com.gomoku.repository.HistoryRepository;
  * @author zeldan
  *
  */
-@RequestMapping("history")
+@RequestMapping("/api/history")
 @RestController
 public class HistoryController {
 

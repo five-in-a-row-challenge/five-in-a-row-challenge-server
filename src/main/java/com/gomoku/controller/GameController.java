@@ -3,12 +3,14 @@ package com.gomoku.controller;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.game.GameTaskScheduler;
@@ -21,7 +23,7 @@ import com.gomoku.repository.PlayerRepository;
  * @author zeldan
  *
  */
-@RequestMapping("game")
+@RequestMapping("/api/game")
 @RestController
 public class GameController {
 
@@ -36,7 +38,7 @@ public class GameController {
     @Autowired
     private PlayerRepository playerRepository;
 
-    @RequestMapping(value = "/start", method = GET)
+    @RequestMapping(value = "/start", method = POST)
     public void start() {
         final List<Player> players = playerRepository.findAll();
         if (players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {

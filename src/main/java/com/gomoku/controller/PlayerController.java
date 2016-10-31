@@ -18,13 +18,13 @@ import com.gomoku.repository.PlayerRepository;
  * @author zeldan
  *
  */
-@RequestMapping("player")
+@RequestMapping("/api/players")
 @RestController
 public class PlayerController {
 
     @Autowired
     private PlayerRepository playerRepository;
-
+    
     @RequestMapping(method = POST)
     public void storePlayer(@RequestBody final Player player) {
         playerRepository.save(player);
