@@ -14,7 +14,7 @@ import com.gomoku.repository.HistoryRepository;
 public class InMemoryHistoryRepository implements HistoryRepository {
 
     private static final Map<Long, History> HISTORIES = new HashMap<>();
-    private static Long historyId = 1L;
+    private static Long historyId = 0L;
 
     @Override
     public Long save(final History history) {

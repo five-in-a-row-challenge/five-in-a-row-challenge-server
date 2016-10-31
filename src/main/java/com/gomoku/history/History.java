@@ -9,6 +9,8 @@ public class History {
 
     private final int round;
 
+    private final int gameNumber;
+
     private final Player firstPlayer;
 
     private final Player secondPlayer;
@@ -17,8 +19,10 @@ public class History {
 
     private final List<HistoryStep> steps;
 
-    public History(final int round, final Player firstPlayer, final Player secondPlayer, final Optional<Player> winner, final List<HistoryStep> steps) {
+    public History(final int round, final int gameNumber, final Player firstPlayer, final Player secondPlayer,
+            final Optional<Player> winner, final List<HistoryStep> steps) {
         this.round = round;
+        this.gameNumber = gameNumber;
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.winner = winner;
@@ -27,6 +31,10 @@ public class History {
 
     public int getRound() {
         return round;
+    }
+
+    public int getGameNumber() {
+        return gameNumber;
     }
 
     public Player getFirstPlayer() {

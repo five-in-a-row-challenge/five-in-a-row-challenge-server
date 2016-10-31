@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,14 @@ public class GameTaskScheduler {
 
     private void startRound(final int round, final List<Player> players) {
         LOG.info("The round '{}' is started.", round);
+        final AtomicInteger gameNr = new AtomicInteger(1);
         players.forEach(playerOne -> {
             players.forEach(playerTwo -> {
                 if (!playerOne.equals(playerTwo)) {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
-                    final Long historyId = historyRepository.save(new History(round, playerOne, playerTwo, winner, gameTaskResult.getSteps()));
+                    final Long historyId = historyRepository.save(new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps()));
                     if (winner.isPresent()) {
                         LOG.info("------ The winner is: " + winner.get());
                     } else {
