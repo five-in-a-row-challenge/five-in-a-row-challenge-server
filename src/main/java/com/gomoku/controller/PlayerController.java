@@ -3,6 +3,8 @@ package com.gomoku.controller;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,12 @@ public class PlayerController {
 
     @Autowired
     private PlayerRepository playerRepository;
-    
+
+    @RequestMapping(method = GET)
+    public List<Player> players() {
+        return playerRepository.findAll();
+    }
+
     @RequestMapping(method = POST)
     public void storePlayer(@RequestBody final Player player) {
         playerRepository.save(player);

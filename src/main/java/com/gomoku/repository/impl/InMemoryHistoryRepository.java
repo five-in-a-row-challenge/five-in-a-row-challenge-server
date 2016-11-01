@@ -14,11 +14,11 @@ import com.gomoku.repository.HistoryRepository;
 public class InMemoryHistoryRepository implements HistoryRepository {
 
     private static final Map<Long, History> HISTORIES = new HashMap<>();
-    private static Long historyId = 0L;
 
     @Override
     public Long save(final History history) {
-        HISTORIES.put(++historyId, history);
+        final long historyId = history.getId();
+        HISTORIES.put(historyId, history);
         return historyId;
     }
 

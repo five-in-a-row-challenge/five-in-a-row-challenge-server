@@ -80,7 +80,7 @@ public class GameTaskScheduler {
                     final Optional<Player> winner = gameTaskResult.getWinner();
                     final Long historyId = historyRepository.save(new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps()));
                     if (winner.isPresent()) {
-                        LOG.info("------ The winner is: " + winner.get());
+                        LOG.info("------ The winner is: " + winner.get().getUserName());
                     } else {
                         LOG.info("------ The game is draw.");
                     }
