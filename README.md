@@ -15,9 +15,17 @@ The server plays "five-in-a-row" games in every minutes, and call the players vi
 - gradlew bootRun
 
 ## How to play game
-TODO: create a long description
+0. Use swagger docs at http://localhost:8080/swagger-ui.html
+1. Post new players (at least 2 players) via swagger
+2. Start the game
+
+You can use https://github.com/zeldan/five-in-a-row-challenge-random-ai to try the game.
+Start a **five-in-a-row-challenge-random-ai**, and then post two players with different username, but with the same network address: http://localhost:9999.
 
 ![alt text](https://github.com/zeldan/five-in-a-row-challenge/blob/master/FiveInARowSequence.png "Five in a row sequence diagram")
+
+## UI ##
+in work
 
 ## Technology Stack
 - Java 8
