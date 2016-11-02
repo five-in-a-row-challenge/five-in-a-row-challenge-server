@@ -3,13 +3,14 @@ package com.gomoku.history;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.annotation.Id;
+
 import com.gomoku.player.Player;
 
 public class History {
 
-    private static Long historyId = 1L;
-
-    private final long id;
+    @Id
+    private String id;
 
     private final int round;
 
@@ -25,7 +26,6 @@ public class History {
 
     public History(final int round, final int gameNumber, final Player firstPlayer, final Player secondPlayer,
             final Optional<Player> winner, final List<HistoryStep> steps) {
-        id = historyId++;
         this.round = round;
         this.gameNumber = gameNumber;
         this.firstPlayer = firstPlayer;
@@ -34,7 +34,7 @@ public class History {
         this.steps = steps;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 

@@ -78,13 +78,14 @@ public class GameTaskScheduler {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
-                    final Long historyId = historyRepository.save(new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps()));
+                    final History history = new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps());
+                    historyRepository.save(history);
                     if (winner.isPresent()) {
                         LOG.info("------ The winner is: " + winner.get().getUserName());
                     } else {
                         LOG.info("------ The game is draw.");
                     }
-                    LOG.info("------ The id of history is: " + historyId);
+                    LOG.info("------ The id of history is: " + history.getId());
                 }
             });
         });

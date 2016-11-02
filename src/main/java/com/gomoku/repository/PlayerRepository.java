@@ -1,6 +1,6 @@
 package com.gomoku.repository;
 
-import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.gomoku.player.Player;
 
@@ -10,12 +10,6 @@ import com.gomoku.player.Player;
  * @author zeldan
  *
  */
-public interface PlayerRepository {
-
-    void save(final Player player);
-
-    Player find(final String username);
-
-    List<Player> findAll();
+public interface PlayerRepository extends MongoRepository<Player, String> {
 
 }

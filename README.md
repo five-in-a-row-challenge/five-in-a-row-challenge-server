@@ -12,7 +12,8 @@ Teams have to build a "gomoku" robot to be able to overcome other teams and win 
 The server plays "five-in-a-row" games in every minutes, and call the players via rest.
 
 ## How to start the server
-- gradlew bootRun
+1. start MongoDB
+2. gradlew bootRun
 
 ## How to play game
 0. Use swagger docs at http://localhost:8080/swagger-ui.html
@@ -30,3 +31,4 @@ in work
 ## Technology Stack
 - Java 8
 - Spring boot 1.4.1
+- MongoDB

@@ -39,6 +39,6 @@ public class PlayerController {
 
     @RequestMapping(value = "/{username}", method = GET)
     public Player getPlayer(@PathVariable final String username) {
-        return playerRepository.find(username);
+        return playerRepository.findOne(username);
     }
 }

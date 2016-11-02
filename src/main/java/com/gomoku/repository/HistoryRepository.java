@@ -1,16 +1,9 @@
 package com.gomoku.repository;
 
-import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.gomoku.history.History;
 
-public interface HistoryRepository {
+public interface HistoryRepository extends MongoRepository<History, String> {
 
-    Long save(final History history);
-
-    List<History> findAll();
-
-    History find(long id);
-
-    void deleteAll();
 }

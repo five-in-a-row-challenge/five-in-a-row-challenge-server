@@ -2,8 +2,17 @@ package com.gomoku.player;
 
 import java.util.Objects;
 
+import org.springframework.data.annotation.Id;
+
+/**
+ * Player immutable class.
+ *
+ * @author zeldan
+ *
+ */
 public class Player {
 
+    @Id
     private String userName;
 
     private String networkAddress;

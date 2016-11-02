@@ -31,7 +31,7 @@ public class HistoryController {
     }
 
     @RequestMapping(value = "/{id}", method = GET)
-    public History getPlayer(@PathVariable final Long id) {
-        return historeRepository.find(id);
+    public History getPlayer(@PathVariable final String id) {
+        return historeRepository.findOne(id);
     }
 }
