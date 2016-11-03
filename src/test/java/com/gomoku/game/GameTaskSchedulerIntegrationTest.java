@@ -29,6 +29,8 @@ import com.gomoku.repository.HistoryRepository;
 @SpringBootTest
 public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContextTests {
 
+    private static final String ANY_GAME_ID = "anyGameId";
+
     private static final int LENGTH_OF_ONE_ROUND_IN_MINUTES = 0;
     private static final int LENGTH_OF_THE_GAME_IN_MINUTES = 0;
 
@@ -60,7 +62,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
         final Player secondPlayer = new Player("player2", "http://localhost:8081");
 
         // WHEN
-        underTest.startAndScheduleGames(asList(firstPlayer, secondPlayer));
+        underTest.startAndScheduleGames(ANY_GAME_ID, asList(firstPlayer, secondPlayer));
 
         // THEN
         verify(gameTask).matchAgainstEachOther(firstPlayer, secondPlayer);
@@ -76,7 +78,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
         final Player secondPlayer = new Player("player2", "http://localhost:8081");
 
         // WHEN
-        underTest.startAndScheduleGames(asList(firstPlayer, secondPlayer));
+        underTest.startAndScheduleGames(ANY_GAME_ID, asList(firstPlayer, secondPlayer));
 
         // THEN
         final List<History> histories = historyRepository.findAll();

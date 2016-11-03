@@ -9,12 +9,16 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gomoku.game.Game;
 import com.gomoku.game.GameTaskScheduler;
+import com.gomoku.history.History;
 import com.gomoku.player.Player;
+import com.gomoku.repository.GameRepository;
+import com.gomoku.repository.HistoryRepository;
 import com.gomoku.repository.PlayerRepository;
 
 /**
@@ -23,12 +27,12 @@ import com.gomoku.repository.PlayerRepository;
  * @author zeldan
  *
  */
-@RequestMapping("/api/game")
+@RequestMapping("/api/games")
 @RestController
 public class GameController {
 
     private static final int MINIMUM_PLAYER_NUMBER_TO_START = 2;
-    private static final int MINUTE_WAIT_BEFORE_START = 10;
+    private static final int MINUTE_WAIT_BEFORE_START = 1;
 
     private static final Logger LOG = getLogger(GameController.class);
 
@@ -36,24 +40,45 @@ public class GameController {
     private GameTaskScheduler gameTaskScheduler;
 
     @Autowired
+    private GameRepository gameRepository;
+
+    @Autowired
     private PlayerRepository playerRepository;
 
-    @RequestMapping(value = "/start", method = POST)
-    public void start() {
+    @Autowired
+    private HistoryRepository historyRepository;
+
+    @RequestMapping(method = GET)
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
+    }
+
+    @RequestMapping(method = POST, value = "/start")
+    public String start() {
         final List<Player> players = playerRepository.findAll();
         if (players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {
-            startNewGame(players);
+            final Game game = gameRepository.save(new Game());
+            final String gameId = game.getId();
+            startNewGame(gameId, players);
+            return gameId;
+        } else {
+            throw new RuntimeException("Minimum number of players is 2.");
         }
     }
 
-    private void startNewGame(final List<Player> players) {
+    @RequestMapping(method = GET, value = "/{gameId}/histories")
+    public List<History> getHistories(@PathVariable final String gameId) {
+        return historyRepository.findAllByGameId(gameId);
+    }
+
+    private void startNewGame(final String gameId, final List<Player> players) {
         final Runnable runnable = () -> {
             try {
                 MINUTES.sleep(MINUTE_WAIT_BEFORE_START);
             } catch (final InterruptedException e) {
                 LOG.warn("An exception is occurred while try to wait before start and schedule games.", e);
             }
-            gameTaskScheduler.startAndScheduleGames(players);
+            gameTaskScheduler.startAndScheduleGames(gameId, players);
         };
         final Thread thread = new Thread(runnable);
         thread.start();

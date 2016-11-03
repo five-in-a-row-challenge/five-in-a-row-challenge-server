@@ -55,13 +55,13 @@ public class GameTaskScheduler {
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
     }
 
-    public void startAndScheduleGames(final List<Player> players) {
+    public void startAndScheduleGames(final String gameId, final List<Player> players) {
 
         final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), lengthOfTheGameInMinutes, MINUTES);
         int round = 1;
         while (!countdown.isDone()) {
             try {
-                startRound(round++, players);
+                startRound(gameId, round++, players);
                 sleep(lengthOfOneRoundInMinutes * ONE_MINUTE_IN_MILLISEC);
             } catch (final InterruptedException e) {
                 LOG.warn("The game is interrupted.");
@@ -69,7 +69,7 @@ public class GameTaskScheduler {
         }
     }
 
-    private void startRound(final int round, final List<Player> players) {
+    private void startRound(final String gameId, final int round, final List<Player> players) {
         LOG.info("The round '{}' is started.", round);
         final AtomicInteger gameNr = new AtomicInteger(1);
         players.forEach(playerOne -> {
@@ -78,7 +78,7 @@ public class GameTaskScheduler {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
-                    final History history = new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps());
+                    final History history = new History(gameId, round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps());
                     historyRepository.save(history);
                     if (winner.isPresent()) {
                         LOG.info("------ The winner is: " + winner.get().getUserName());
