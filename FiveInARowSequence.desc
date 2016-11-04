@@ -1,0 +1,75 @@
+title Five in a row challenge
+
+note left of FiveInARowChallenge Server
+    Actual board:
+    N N N
+    N N N
+    N N N
+end note
+
+FiveInARowChallenge Server->+Player1: GET /nextMove
+note right of FiveInARowChallenge Server:
+    ?width=3&height=3&player=X&table=NNNNNNNNN
+end note
+Player1->-FiveInARowChallenge Server: {"x": 1, "y": 1}
+
+note left of FiveInARowChallenge Server
+    Actual board:
+    X N N
+    N N N
+    N N N
+end note
+
+FiveInARowChallenge Server->+Player2: GET /nextMove
+note right of FiveInARowChallenge Server:
+    ?width=3&height=3&player=O&table=XNNNNNNNN
+end note
+Player2->-FiveInARowChallenge Server: {"x": 1, "y": 2}
+
+note left of FiveInARowChallenge Server
+    Actual board:
+    X N N
+    O N N
+    N N N
+end note
+
+FiveInARowChallenge Server->+Player1: GET /nextMove
+note right of FiveInARowChallenge Server:
+    ?width=3&height=3&player=X&table=XONNNNNNN
+end note
+Player1->-FiveInARowChallenge Server: {"x": 2, "y": 1}
+
+note left of FiveInARowChallenge Server
+    Actual board:
+    X X N
+    O N N
+    N N N
+end note
+
+FiveInARowChallenge Server->+Player2: GET /nextMove
+note right of FiveInARowChallenge Server:
+    ?width=3&height=3&player=O&table=XONXNNNNN
+end note
+Player2->-FiveInARowChallenge Server: {"x": 2, "y": 2}
+
+note left of FiveInARowChallenge Server
+    Actual board:
+    X X N
+    O O N
+    N N N
+end note
+
+FiveInARowChallenge Server->+Player1: GET /nextMove
+note right of FiveInARowChallenge Server:
+    ?width=3&height=3&player=X&table=XONXONNNNN
+end note
+Player1->-FiveInARowChallenge Server: {"x": 3, "y": 1}
+
+note left of FiveInARowChallenge Server
+    Actual board:
+    X X X
+    O O N
+    N N N
+end note
+
+note over FiveInARowChallenge Server, Player2: The WINNER IS Player1
