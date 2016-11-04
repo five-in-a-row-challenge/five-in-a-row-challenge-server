@@ -15,7 +15,7 @@ This repository is only for API, you can see the progress of the game in the log
 Skeleton repositories in different languages: TODO
 
 Examples:
-- https://github.com/zeldan/five-in-a-row-challenge-random-ai
+- https://github.com/five-in-a-row-challenge/five-in-a-row-challenge-random-ai
 
 ## Scores and UI
 - Scores / Points: in progress
@@ -33,7 +33,7 @@ Examples:
 You can use https://github.com/five-in-a-row-challenge/five-in-a-row-challenge-random-ai to try the game.
 Start a **five-in-a-row-challenge-random-ai**, and then post two players with different username, but with the same network address: http://localhost:9999.
 
-![alt text](https://github.com/five-in-a-row-challenge/five-in-a-row-challenge/blob/master/FiveInARowSequence.png "Five in a row sequence diagram")
+![alt text](https://github.com/five-in-a-row-challenge/five-in-a-row-challenge-server/blob/master/FiveInARowSequence.png "Five in a row sequence diagram")
 
 ## Technology Stack
 - Java 8
