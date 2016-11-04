@@ -3,16 +3,26 @@
 Five in a row challenge
 =======================
 The **Five in a row challenge** is a multiplayer REST game, for practicing writing a proper REST endpoint with a getting better gomoku A.I.. 
-You have to hurry, because the server plays game in every minute, and you can miss valuable points.
+You have to hurry, because the server plays game in every five minute, and you can miss valuable points.
 This is the main application for playing **Five in a row challenge**.
 This server handles all incoming requests and responses, and save the actual state of the board of every games.
 
 ## About the game
-Teams have to build a "gomoku" robot to be able to overcome other teams and win the competition.
-The server plays "five-in-a-row" games in every minutes, and call the players via rest.
+Teams have to build a "gomoku" REST robot to be able to overcome other teams and win the competition.
+The server plays "five-in-a-row" game in every five minute (it can be overwritten), and call the players via rest.
+This repository is only for API, you can see the progress of the game in the logs.
+
+Skeleton repositories in different languages: TODO
+
+Examples:
+- https://github.com/zeldan/five-in-a-row-challenge-random-ai
+
+## Scores and UI
+- Scores / Points: in progress
+- UI: other repository in the near future
 
 ## How to start the server
-1. start MongoDB
+1. run MongoDB
 2. gradlew bootRun
 
 ## How to play game
@@ -20,13 +30,10 @@ The server plays "five-in-a-row" games in every minutes, and call the players vi
 1. Post new players (at least 2 players) via swagger
 2. Start the game
 
-You can use https://github.com/zeldan/five-in-a-row-challenge-random-ai to try the game.
+You can use https://github.com/five-in-a-row-challenge/five-in-a-row-challenge-random-ai to try the game.
 Start a **five-in-a-row-challenge-random-ai**, and then post two players with different username, but with the same network address: http://localhost:9999.
 
-![alt text](https://github.com/zeldan/five-in-a-row-challenge/blob/master/FiveInARowSequence.png "Five in a row sequence diagram")
-
-## UI ##
-in work
+![alt text](https://github.com/five-in-a-row-challenge/five-in-a-row-challenge/blob/master/FiveInARowSequence.png "Five in a row sequence diagram")
 
 ## Technology Stack
 - Java 8
