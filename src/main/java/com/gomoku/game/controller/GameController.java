@@ -48,11 +48,6 @@ public class GameController {
     @Autowired
     private HistoryRepository historyRepository;
 
-    @RequestMapping(method = GET)
-    public List<Game> getAllGames() {
-        return gameRepository.findAll();
-    }
-
     @RequestMapping(method = POST, value = "/start")
     public String start() {
         final List<Player> players = playerRepository.findAll();
@@ -64,6 +59,11 @@ public class GameController {
         } else {
             throw new RuntimeException("Minimum number of players is 2.");
         }
+    }
+
+    @RequestMapping(method = GET)
+    public List<Game> getAllGames() {
+        return gameRepository.findAll();
     }
 
     @RequestMapping(method = GET, value = "/{gameId}/histories")

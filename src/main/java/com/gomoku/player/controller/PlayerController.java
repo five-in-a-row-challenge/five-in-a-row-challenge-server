@@ -1,5 +1,6 @@
 package com.gomoku.player.controller;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -27,18 +28,23 @@ public class PlayerController {
     @Autowired
     private PlayerRepository playerRepository;
 
-    @RequestMapping(method = GET)
-    public List<Player> players() {
-        return playerRepository.findAll();
-    }
-
     @RequestMapping(method = POST)
     public void storePlayer(@RequestBody final Player player) {
         playerRepository.save(player);
     }
 
-    @RequestMapping(value = "/{username}", method = GET)
+    @RequestMapping(method = GET)
+    public List<Player> players() {
+        return playerRepository.findAll();
+    }
+
+    @RequestMapping(method = GET, value = "/{username}")
     public Player getPlayer(@PathVariable final String username) {
         return playerRepository.findOne(username);
+    }
+
+    @RequestMapping(method = DELETE, value = "/{username}")
+    public void deletePlayer(@PathVariable final String username) {
+        playerRepository.delete(username);
     }
 }
