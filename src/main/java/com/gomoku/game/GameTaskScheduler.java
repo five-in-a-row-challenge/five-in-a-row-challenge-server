@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.gomoku.history.History;
+import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
-import com.gomoku.repository.HistoryRepository;
 
 /**
  * Scheduler service to start and schedule games between every players in the given time period.

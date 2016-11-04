@@ -1,4 +1,4 @@
-package com.gomoku.repository;
+package com.gomoku.game.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

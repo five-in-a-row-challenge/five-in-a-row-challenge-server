@@ -1,4 +1,4 @@
-package com.gomoku.repository;
+package com.gomoku.history.repository;
 
 import java.util.List;
 

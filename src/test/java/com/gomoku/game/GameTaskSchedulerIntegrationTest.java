@@ -20,8 +20,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.gomoku.history.History;
+import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
-import com.gomoku.repository.HistoryRepository;
 
 /**
  * Unit test for {@link GameTaskScheduler}.

@@ -1,4 +1,4 @@
-package com.gomoku.controller;
+package com.gomoku.game.controller;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.game.Game;
 import com.gomoku.game.GameTaskScheduler;
+import com.gomoku.game.repository.GameRepository;
 import com.gomoku.history.History;
+import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
-import com.gomoku.repository.GameRepository;
-import com.gomoku.repository.HistoryRepository;
-import com.gomoku.repository.PlayerRepository;
+import com.gomoku.player.repository.PlayerRepository;
 
 /**
  * Rest controller to handle game actions.

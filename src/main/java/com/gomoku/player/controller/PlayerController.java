@@ -1,4 +1,4 @@
-package com.gomoku.controller;
+package com.gomoku.player.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.player.Player;
-import com.gomoku.repository.PlayerRepository;
+import com.gomoku.player.repository.PlayerRepository;
 
 /**
  * Rest controller to handle players.
