@@ -1,4 +1,4 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
 import java.util.Map;
 

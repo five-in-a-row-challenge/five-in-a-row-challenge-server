@@ -1,5 +1,6 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
+import static com.gomoku.game.GameStatus.FINISHED;
 import static java.lang.Thread.sleep;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.gomoku.game.Game;
+import com.gomoku.game.repository.GameRepository;
 import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
@@ -38,19 +41,24 @@ public class GameTaskScheduler {
 
     private final ScheduledExecutorService scheduler;
 
+    private final GameRepository gameRepository;
+
     private final int lengthOfOneRoundInMinutes;
 
     private final int lengthOfTheGameInMinutes;
+
 
     public GameTaskScheduler(
             @Autowired final GameTask gameTask,
             @Autowired final HistoryRepository historyRepository,
             @Autowired final ScheduledExecutorService scheduler,
+            @Autowired final GameRepository gameRepository,
             @Value("${game.lengthOfOneRoundInMinutes}") final int lengthOfOneRoundInMinutes,
             @Value("${game.lengthOfTheGameInMinutes}") final int lengthOfTheGameInMinutes) {
         this.gameTask = gameTask;
         this.historyRepository = historyRepository;
         this.scheduler = scheduler;
+        this.gameRepository = gameRepository;
         this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
     }
@@ -67,6 +75,9 @@ public class GameTaskScheduler {
                 LOG.warn("The game is interrupted.");
             }
         }
+        final Game game = gameRepository.findOne(gameId);
+        game.setGameStatus(FINISHED);
+        gameRepository.save(game);
     }
 
     private void startRound(final String gameId, final int round, final List<Player> players) {

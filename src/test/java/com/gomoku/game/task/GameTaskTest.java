@@ -1,4 +1,4 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
 import static com.gomoku.board.BoardFieldType.NONE;
 import static com.gomoku.board.BoardFieldType.PLAYER_O;
@@ -25,6 +25,10 @@ import org.testng.annotations.Test;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
+import com.gomoku.game.task.GameExecutorService;
+import com.gomoku.game.task.GameState;
+import com.gomoku.game.task.GameTask;
+import com.gomoku.game.task.GameTaskResult;
 import com.gomoku.history.HistoryStep;
 import com.gomoku.player.Player;
 

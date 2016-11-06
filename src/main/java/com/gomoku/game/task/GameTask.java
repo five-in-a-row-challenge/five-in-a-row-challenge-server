@@ -1,4 +1,4 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
 import static com.gomoku.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;

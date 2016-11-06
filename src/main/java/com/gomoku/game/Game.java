@@ -1,5 +1,7 @@
 package com.gomoku.game;
 
+import static com.gomoku.game.GameStatus.IN_PROGRESS;
+
 import java.util.Date;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +24,12 @@ public class Game {
     @CreatedDate
     private Date createdDate;
 
+    private GameStatus gameStatus;
+
+    public Game() {
+        gameStatus = IN_PROGRESS;
+    }
+
     public String getId() {
         return id;
     }
@@ -30,4 +38,13 @@ public class Game {
     public Date getCreatedDate() {
         return createdDate;
     }
+
+    public void setGameStatus(final GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
 }

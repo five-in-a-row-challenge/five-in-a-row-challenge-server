@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.game.Game;
-import com.gomoku.game.GameTaskScheduler;
 import com.gomoku.game.repository.GameRepository;
+import com.gomoku.game.task.GameTaskScheduler;
 import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;

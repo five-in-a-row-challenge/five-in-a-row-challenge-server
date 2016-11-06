@@ -1,4 +1,4 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
 import static java.util.Collections.unmodifiableList;
 

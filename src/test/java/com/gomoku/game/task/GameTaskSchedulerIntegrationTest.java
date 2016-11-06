@@ -1,11 +1,13 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
+import static com.gomoku.game.GameStatus.FINISHED;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,11 +16,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.gomoku.game.Game;
+import com.gomoku.game.repository.GameRepository;
 import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
@@ -27,12 +31,14 @@ import com.gomoku.player.Player;
  * Unit test for {@link GameTaskScheduler}.
  */
 @SpringBootTest
+@TestPropertySource(value="classpath:application-test.properties")
 public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContextTests {
-
-    private static final String ANY_GAME_ID = "anyGameId";
 
     private static final int LENGTH_OF_ONE_ROUND_IN_MINUTES = 0;
     private static final int LENGTH_OF_THE_GAME_IN_MINUTES = 0;
+
+    private static final Player FIRST_PLAYER = new Player("player1", "http://localhost:8080");
+    private static final Player SECOND_PLAYER = new Player("player2", "http://localhost:8081");
 
     @Mock
     private GameTask gameTask;
@@ -43,12 +49,15 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     @Autowired
     private ScheduledExecutorService scheduler;
 
+    @Autowired
+    private GameRepository gameRepository;
+
     private GameTaskScheduler underTest;
 
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        underTest = new GameTaskScheduler(gameTask, historyRepository, scheduler, LENGTH_OF_ONE_ROUND_IN_MINUTES,
+        underTest = new GameTaskScheduler(gameTask, historyRepository, scheduler, gameRepository, LENGTH_OF_ONE_ROUND_IN_MINUTES,
                 LENGTH_OF_THE_GAME_IN_MINUTES);
         historyRepository.deleteAll();
     }
@@ -56,32 +65,46 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     @Test
     public void shoudPlayMatchToEveryOneWithEveryOne() {
         // GIVEN
+        final Game savedGame = gameRepository.save(new Game());
         final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
-        final Player firstPlayer = new Player("player1", "http://localhost:8080");
-        final Player secondPlayer = new Player("player2", "http://localhost:8081");
 
         // WHEN
-        underTest.startAndScheduleGames(ANY_GAME_ID, asList(firstPlayer, secondPlayer));
+        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
 
         // THEN
-        verify(gameTask).matchAgainstEachOther(firstPlayer, secondPlayer);
-        verify(gameTask).matchAgainstEachOther(secondPlayer, firstPlayer);
+        verify(gameTask).matchAgainstEachOther(FIRST_PLAYER, SECOND_PLAYER);
+        verify(gameTask).matchAgainstEachOther(SECOND_PLAYER, FIRST_PLAYER);
     }
 
     @Test
     public void shouldStoreHistoryAfterGame() {
         // GIVEN
+        final Game savedGame = gameRepository.save(new Game());
         final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
-        final Player firstPlayer = new Player("player1", "http://localhost:8080");
-        final Player secondPlayer = new Player("player2", "http://localhost:8081");
 
         // WHEN
-        underTest.startAndScheduleGames(ANY_GAME_ID, asList(firstPlayer, secondPlayer));
+        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
 
         // THEN
         final List<History> histories = historyRepository.findAll();
-        Assert.assertEquals(histories.size(), 2);
+        assertEquals(histories.size(), 2);
+    }
+
+    @Test
+    public void shouldSetGameStatusToFinishedAfterGame() {
+        // GIVEN
+        final Game savedGame = gameRepository.save(new Game());
+        final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
+        when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
+
+        // WHEN
+        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
+
+        // THEN
+        final Game actualGame = gameRepository.findOne(savedGame.getId());
+        assertEquals(actualGame.getGameStatus(), FINISHED);
+
     }
 }

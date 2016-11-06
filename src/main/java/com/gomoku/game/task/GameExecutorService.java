@@ -1,4 +1,4 @@
-package com.gomoku.game;
+package com.gomoku.game.task;
 
 import static com.gomoku.player.PlayerUriBuilder.buildUri;
 import static java.util.Arrays.asList;
