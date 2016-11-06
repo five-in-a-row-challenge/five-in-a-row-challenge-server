@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zeldan/five-in-a-row-challenge.svg?branch=master)](https://travis-ci.org/zeldan/five-in-a-row-challenge)
+[![Build Status](https://travis-ci.org/five-in-a-row-challenge/five-in-a-row-challenge-server.svg?branch=master)](https://travis-ci.org/five-in-a-row-challenge/five-in-a-row-challenge-server)
 
 Five in a row challenge
 =======================
