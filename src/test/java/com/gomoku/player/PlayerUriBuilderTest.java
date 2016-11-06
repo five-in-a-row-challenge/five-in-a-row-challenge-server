@@ -3,6 +3,7 @@ package com.gomoku.player;
 import static com.gomoku.board.BoardFieldType.PLAYER_X;
 import static java.lang.String.valueOf;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.net.URI;
 
@@ -37,7 +38,18 @@ public class PlayerUriBuilderTest {
         assertEquals(parameters.getFirst("height"), valueOf(BOARD_HEIGHT));
         assertEquals(parameters.getFirst("table").length(), BOARD_WIDTH * BOARD_HEIGHT);
         assertEquals(parameters.getFirst("player"), PLAYER_X.toString());
-
     }
 
+    @Test
+    public void shouldURIStartWithSpecifiedPath() {
+        // GIVEN
+        final Board board = new Board(BOARD_WIDTH, BOARD_HEIGHT, 1);
+
+        // WHEN
+        final URI uri = PlayerUriBuilder.buildUri("http://computer:8080", board, PLAYER_X);
+
+        // THEN
+        final String fullPath = UriComponentsBuilder.fromUri(uri).build().toString();
+        assertTrue(fullPath.startsWith("http://computer:8080/nextMove"));
+    }
 }

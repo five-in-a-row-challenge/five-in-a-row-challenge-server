@@ -15,12 +15,15 @@ import com.gomoku.board.BoardFieldType;
  */
 public final class PlayerUriBuilder {
 
+    private static final String PATH_NEXT_MOVE = "nextMove";
+
     private PlayerUriBuilder() {
 
     }
 
     public static URI buildUri(final String baseUrl, final Board board, final BoardFieldType boardFieldType) {
         final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .path(PATH_NEXT_MOVE)
                 .queryParam("width", board.getWidth())
                 .queryParam("height", board.getHeight())
                 .queryParam("table", board.toString())
