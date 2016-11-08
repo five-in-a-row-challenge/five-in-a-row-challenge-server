@@ -21,6 +21,9 @@ import com.gomoku.game.repository.GameRepository;
 import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
+import com.gomoku.score.Score;
+import com.gomoku.score.ScoreType;
+import com.gomoku.score.repository.ScoreRepository;
 
 /**
  * Scheduler service to start and schedule games between every players in the given time period.
@@ -43,22 +46,25 @@ public class GameTaskScheduler {
 
     private final GameRepository gameRepository;
 
+    private final ScoreRepository scoreRepository;
+
     private final int lengthOfOneRoundInMinutes;
 
     private final int lengthOfTheGameInMinutes;
-
 
     public GameTaskScheduler(
             @Autowired final GameTask gameTask,
             @Autowired final HistoryRepository historyRepository,
             @Autowired final ScheduledExecutorService scheduler,
             @Autowired final GameRepository gameRepository,
+            @Autowired final ScoreRepository scoreRepository,
             @Value("${game.lengthOfOneRoundInMinutes}") final int lengthOfOneRoundInMinutes,
             @Value("${game.lengthOfTheGameInMinutes}") final int lengthOfTheGameInMinutes) {
         this.gameTask = gameTask;
         this.historyRepository = historyRepository;
         this.scheduler = scheduler;
         this.gameRepository = gameRepository;
+        this.scoreRepository = scoreRepository;
         this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
     }
@@ -92,8 +98,12 @@ public class GameTaskScheduler {
                     final History history = new History(gameId, round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps());
                     historyRepository.save(history);
                     if (winner.isPresent()) {
+                        scoreRepository.save(new Score(gameId, round, gameNr.get(), winner.get().getUserName(), ScoreType.VICTORY.getScore()));
                         LOG.info("------ The winner is: " + winner.get().getUserName());
                     } else {
+                        final int scoreOfDraw = ScoreType.DRAW.getScore();
+                        scoreRepository.save(new Score(gameId, round, gameNr.get(), playerOne.getUserName(), scoreOfDraw));
+                        scoreRepository.save(new Score(gameId, round, gameNr.get(), playerTwo.getUserName(), scoreOfDraw));
                         LOG.info("------ The game is draw.");
                     }
                     LOG.info("------ The id of history is: " + history.getId());

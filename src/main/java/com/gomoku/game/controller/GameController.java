@@ -1,11 +1,14 @@
 package com.gomoku.game.controller;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
 import com.gomoku.player.Player;
 import com.gomoku.player.repository.PlayerRepository;
+import com.gomoku.score.Score;
+import com.gomoku.score.repository.ScoreRepository;
 
 /**
  * Rest controller to handle game actions.
@@ -48,6 +53,9 @@ public class GameController {
     @Autowired
     private HistoryRepository historyRepository;
 
+    @Autowired
+    private ScoreRepository scoreRepository;
+
     @RequestMapping(method = POST, value = "/start")
     public String start() {
         final List<Player> players = playerRepository.findAll();
@@ -69,6 +77,12 @@ public class GameController {
     @RequestMapping(method = GET, value = "/{gameId}/histories")
     public List<History> getHistories(@PathVariable final String gameId) {
         return historyRepository.findAllByGameId(gameId);
+    }
+
+    @RequestMapping(method = GET, value = "/{gameId}/scores")
+    public Map<String, Integer> getScore(@PathVariable final String gameId) {
+        final List<Score> scoresByGameId = scoreRepository.findByGameId(gameId);
+        return scoresByGameId.stream().collect(groupingBy(Score::getPlayer, summingInt(Score::getScore)));
     }
 
     private void startNewGame(final String gameId, final List<Player> players) {

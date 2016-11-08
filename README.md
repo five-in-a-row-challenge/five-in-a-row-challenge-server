@@ -7,19 +7,25 @@ You have to hurry, because the server plays game in every five minute, and you c
 This is the main application for playing **Five in a row challenge**.
 This server handles all incoming requests and responses, and save the actual state of the board of every games.
 
+This repository is only for API, you can see the progress of the game in the logs.
+
 ## About the game
 Teams have to build a "gomoku" REST robot to be able to overcome other teams and win the competition.
 The server plays "five-in-a-row" game in every five minute (it can be overwritten), and call the players via rest.
-This repository is only for API, you can see the progress of the game in the logs.
+Everyone play against everyone twice, because the game swaps the starting players.
 
 Skeleton repositories in different languages: TODO
 
 Examples:
 - https://github.com/five-in-a-row-challenge/five-in-a-row-challenge-random-ai
 
-## Scores and UI
-- Scores / Points: in progress
-- UI: other repository in the near future
+## Scores 
+In every round, the players get scores in the following way:
+- in case of winning, the winner gets **5 scores**
+- in case of draw, the two players get **2 scores** 
+- the loser gets **0 score**
+
+The winner of **Five in a row challenge** is who received the highest number of points in the end of the game.
 
 ## How to start the server
 1. run MongoDB
