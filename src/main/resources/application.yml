@@ -1,0 +1,13 @@
+spring:
+    data:
+        mongodb:
+            database: fiveinarow
+
+board:
+    width: 5
+    height: 5
+    limitToWin: 5
+
+game:
+    lengthOfOneRoundInMinutes: 1
+    lengthOfTheGameInMinutes: 5
