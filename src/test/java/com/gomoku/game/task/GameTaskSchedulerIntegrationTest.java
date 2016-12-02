@@ -35,7 +35,7 @@ import com.gomoku.score.repository.ScoreRepository;
  * Unit test for {@link GameTaskScheduler}.
  */
 @SpringBootTest
-@TestPropertySource(value = "classpath:application-test.yml")
+@TestPropertySource(properties = "spring.data.mongodb.database: test")
 public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContextTests {
 
     private static final int LENGTH_OF_ONE_ROUND_IN_MINUTES = 0;
