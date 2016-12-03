@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
+import com.gomoku.board.BoardProperties;
 import com.gomoku.game.task.GameExecutorService;
 import com.gomoku.game.task.GameState;
 import com.gomoku.game.task.GameTask;
@@ -56,7 +57,7 @@ public class GameTaskTest {
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        underTest = new GameTask(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_THREE_TO_WIN, gameService);
+        underTest = new GameTask(new BoardProperties(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_TWO_TO_WIN), gameService);
     }
 
     @Test

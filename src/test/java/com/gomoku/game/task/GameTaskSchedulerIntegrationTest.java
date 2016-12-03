@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.gomoku.game.Game;
+import com.gomoku.game.GameProperties;
 import com.gomoku.game.repository.GameRepository;
 import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
@@ -64,8 +65,8 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        underTest = new GameTaskScheduler(gameTask, historyRepository, scheduler, gameRepository, scoreRepository, LENGTH_OF_ONE_ROUND_IN_MINUTES,
-                LENGTH_OF_THE_GAME_IN_MINUTES);
+        underTest = new GameTaskScheduler(gameTask, historyRepository, scheduler, gameRepository, scoreRepository,
+                new GameProperties(LENGTH_OF_ONE_ROUND_IN_MINUTES, LENGTH_OF_THE_GAME_IN_MINUTES));
         historyRepository.deleteAll();
         scoreRepository.deleteAll();
         gameRepository.deleteAll();

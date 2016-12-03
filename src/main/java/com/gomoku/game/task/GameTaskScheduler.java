@@ -13,10 +13,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.gomoku.game.Game;
+import com.gomoku.game.GameProperties;
 import com.gomoku.game.repository.GameRepository;
 import com.gomoku.history.History;
 import com.gomoku.history.repository.HistoryRepository;
@@ -48,35 +48,27 @@ public class GameTaskScheduler {
 
     private final ScoreRepository scoreRepository;
 
-    private final int lengthOfOneRoundInMinutes;
+    private final GameProperties gameProperties;
 
-    private final int lengthOfTheGameInMinutes;
-
-    public GameTaskScheduler(
-            @Autowired final GameTask gameTask,
-            @Autowired final HistoryRepository historyRepository,
-            @Autowired final ScheduledExecutorService scheduler,
-            @Autowired final GameRepository gameRepository,
-            @Autowired final ScoreRepository scoreRepository,
-            @Value("${game.lengthOfOneRoundInMinutes}") final int lengthOfOneRoundInMinutes,
-            @Value("${game.lengthOfTheGameInMinutes}") final int lengthOfTheGameInMinutes) {
+    @Autowired
+    public GameTaskScheduler(final GameTask gameTask, final HistoryRepository historyRepository, final ScheduledExecutorService scheduler,
+            final GameRepository gameRepository, final ScoreRepository scoreRepository, final GameProperties gameProperties) {
         this.gameTask = gameTask;
         this.historyRepository = historyRepository;
         this.scheduler = scheduler;
         this.gameRepository = gameRepository;
         this.scoreRepository = scoreRepository;
-        this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
-        this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
+        this.gameProperties = gameProperties;
     }
 
     public void startAndScheduleGames(final String gameId, final List<Player> players) {
 
-        final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), lengthOfTheGameInMinutes, MINUTES);
+        final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), gameProperties.getLengthOfTheGameInMinutes(), MINUTES);
         int round = 1;
         while (!countdown.isDone()) {
             try {
                 startRound(gameId, round++, players);
-                sleep(lengthOfOneRoundInMinutes * ONE_MINUTE_IN_MILLISEC);
+                sleep(gameProperties.getLengthOfOneRoundInMinutes() * ONE_MINUTE_IN_MILLISEC);
             } catch (final InterruptedException e) {
                 LOG.warn("The game is interrupted.");
             }

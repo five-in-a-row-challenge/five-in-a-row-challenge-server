@@ -12,11 +12,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.gomoku.board.Board;
 import com.gomoku.board.BoardFieldType;
+import com.gomoku.board.BoardProperties;
 import com.gomoku.history.HistoryStep;
 import com.gomoku.player.Player;
 
@@ -29,29 +29,20 @@ import com.gomoku.player.Player;
 @Component
 public class GameTask {
 
-    private final int boardWidth;
-
-    private final int boardHeight;
-
-    private final int boardLimitToWin;
-
+    private final BoardProperties boardProperties;
+    
     private final GameExecutorService gameService;
 
-    public GameTask(
-            @Value("${board.width}") final int boardWidth,
-            @Value("${board.height}") final int boardHeight,
-            @Value("${board.limitToWin}") final int boardLimitToWin,
-            @Autowired final GameExecutorService gameService) {
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
-        this.boardLimitToWin = boardLimitToWin;
+    @Autowired
+    public GameTask(final BoardProperties boardProperties, final GameExecutorService gameService) {
+        this.boardProperties = boardProperties;
         this.gameService = gameService;
     }
 
     public GameTaskResult matchAgainstEachOther(final Player firstPlayer, final Player secondPlayer) {
         final List<HistoryStep> steps = new ArrayList<>();
         final Map<BoardFieldType, Player> playersWithId = createPlayersType(firstPlayer, secondPlayer);
-        Board board = new Board(boardWidth, boardHeight, boardLimitToWin);
+        Board board = new Board(boardProperties.getWidth(), boardProperties.getHeight(), boardProperties.getLimitToWin());
         GameState gameState = new GameState(playersWithId, board);
         BoardFieldType actualPlayer = PLAYER_O;
         int numberOfStep = 0;
