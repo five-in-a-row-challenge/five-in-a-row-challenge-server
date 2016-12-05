@@ -9,6 +9,5 @@ package com.gomoku.game;
  */
 public enum GameStatus {
 
-    IN_PROGRESS,
-    FINISHED;
+    IN_PROGRESS, FINISHED;
 }

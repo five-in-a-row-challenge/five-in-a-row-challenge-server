@@ -30,7 +30,7 @@ import com.gomoku.player.Player;
 public class GameTask {
 
     private final BoardProperties boardProperties;
-    
+
     private final GameExecutorService gameService;
 
     @Autowired

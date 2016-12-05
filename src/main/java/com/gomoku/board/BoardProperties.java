@@ -15,7 +15,7 @@ public class BoardProperties {
 
     }
 
-    public BoardProperties(int width, int height, int limitToWin) {
+    public BoardProperties(final int width, final int height, final int limitToWin) {
         this.width = width;
         this.height = height;
         this.limitToWin = limitToWin;
@@ -25,7 +25,7 @@ public class BoardProperties {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(final int width) {
         this.width = width;
     }
 
@@ -33,7 +33,7 @@ public class BoardProperties {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(final int height) {
         this.height = height;
     }
 
@@ -41,7 +41,7 @@ public class BoardProperties {
         return limitToWin;
     }
 
-    public void setLimitToWin(int limitToWin) {
+    public void setLimitToWin(final int limitToWin) {
         this.limitToWin = limitToWin;
     }
 

@@ -16,16 +16,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    
+
     private static final String API_PATH = "/api/**";
-    
+
     @Bean
-    public Docket api() { 
-        return new Docket(SWAGGER_2)  
-          .select()                                  
-          .apis(any())              
-          .paths(ant(API_PATH))                          
-          .build();                            
+    public Docket api() {
+        return new Docket(SWAGGER_2)
+                .select()
+                .apis(any())
+                .paths(ant(API_PATH))
+                .build();
     }
-    
+
 }

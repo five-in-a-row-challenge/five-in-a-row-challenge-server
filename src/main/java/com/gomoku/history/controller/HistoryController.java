@@ -20,8 +20,12 @@ import com.gomoku.history.repository.HistoryRepository;
 @RestController
 public class HistoryController {
 
+    private final HistoryRepository historyRepository;
+
     @Autowired
-    private HistoryRepository historyRepository;
+    public HistoryController(final HistoryRepository historyRepository) {
+        this.historyRepository = historyRepository;
+    }
 
     @RequestMapping(method = GET, value = "/{historyId}")
     public History getHistory(@PathVariable final String historyId) {

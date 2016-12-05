@@ -13,7 +13,7 @@ public class GameProperties {
 
     }
 
-    public GameProperties(int lengthOfOneRoundInMinutes, int lengthOfTheGameInMinutes) {
+    public GameProperties(final int lengthOfOneRoundInMinutes, final int lengthOfTheGameInMinutes) {
         this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
     }
@@ -22,7 +22,7 @@ public class GameProperties {
         return lengthOfOneRoundInMinutes;
     }
 
-    public void setLengthOfOneRoundInMinutes(int lengthOfOneRoundInMinutes) {
+    public void setLengthOfOneRoundInMinutes(final int lengthOfOneRoundInMinutes) {
         this.lengthOfOneRoundInMinutes = lengthOfOneRoundInMinutes;
     }
 
@@ -30,7 +30,7 @@ public class GameProperties {
         return lengthOfTheGameInMinutes;
     }
 
-    public void setLengthOfTheGameInMinutes(int lengthOfTheGameInMinutes) {
+    public void setLengthOfTheGameInMinutes(final int lengthOfTheGameInMinutes) {
         this.lengthOfTheGameInMinutes = lengthOfTheGameInMinutes;
     }
 

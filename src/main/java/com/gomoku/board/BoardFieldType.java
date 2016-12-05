@@ -9,11 +9,7 @@ package com.gomoku.board;
  */
 public enum BoardFieldType {
 
-    NONE("N"),
-
-    PLAYER_X("X"),
-
-    PLAYER_O("O");
+    NONE("N"), PLAYER_X("X"), PLAYER_O("O");
 
     private String type;
 

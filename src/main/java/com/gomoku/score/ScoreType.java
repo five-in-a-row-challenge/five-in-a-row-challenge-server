@@ -8,8 +8,7 @@ package com.gomoku.score;
  */
 public enum ScoreType {
 
-    VICTORY(5),
-    DRAW(2);
+    VICTORY(5), DRAW(2);
 
     final int score;
 

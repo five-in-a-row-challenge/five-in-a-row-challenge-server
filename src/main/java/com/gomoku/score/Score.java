@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
  *
  */
 public class Score {
+
     @Id
     private String id;
 

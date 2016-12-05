@@ -36,25 +36,30 @@ import com.gomoku.score.repository.ScoreRepository;
 @RestController
 public class GameController {
 
+    private static final Logger LOG = getLogger(GameController.class);
+
     private static final int MINIMUM_PLAYER_NUMBER_TO_START = 2;
     private static final int MINUTE_WAIT_BEFORE_START = 1;
 
-    private static final Logger LOG = getLogger(GameController.class);
+    private final GameTaskScheduler gameTaskScheduler;
+
+    private final GameRepository gameRepository;
+
+    private final PlayerRepository playerRepository;
+
+    private final HistoryRepository historyRepository;
+
+    private final ScoreRepository scoreRepository;
 
     @Autowired
-    private GameTaskScheduler gameTaskScheduler;
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private PlayerRepository playerRepository;
-
-    @Autowired
-    private HistoryRepository historyRepository;
-
-    @Autowired
-    private ScoreRepository scoreRepository;
+    public GameController(final GameTaskScheduler gameTaskScheduler, final GameRepository gameRepository, final PlayerRepository playerRepository,
+            final HistoryRepository historyRepository, final ScoreRepository scoreRepository) {
+        this.gameTaskScheduler = gameTaskScheduler;
+        this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
+        this.historyRepository = historyRepository;
+        this.scoreRepository = scoreRepository;
+    }
 
     @RequestMapping(method = POST, value = "/start")
     public String start() {
