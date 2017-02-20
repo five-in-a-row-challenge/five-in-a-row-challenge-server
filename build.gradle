@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.2.RELEASE'
+		springBootVersion = '1.5.1.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -32,9 +32,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-configuration-processor')
-	compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.5')
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.6')
 	
-	testCompile('org.testng:testng:6.9.13.6')
-	testCompile('org.mockito:mockito-core:2.2.27')
+	testCompile('org.testng:testng:6.10')
+	testCompile('org.mockito:mockito-core:2.7.9')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

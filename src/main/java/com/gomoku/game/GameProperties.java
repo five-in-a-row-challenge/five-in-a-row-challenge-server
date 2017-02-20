@@ -1,8 +1,10 @@
 package com.gomoku.game;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 @ConfigurationProperties("game")
+@Component
 public class GameProperties {
 
     private int lengthOfOneRoundInMinutes;

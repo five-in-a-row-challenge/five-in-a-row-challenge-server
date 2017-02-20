@@ -1,8 +1,10 @@
 package com.gomoku.board;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 @ConfigurationProperties("board")
+@Component
 public class BoardProperties {
 
     private int width;

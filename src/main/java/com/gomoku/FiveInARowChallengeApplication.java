@@ -17,7 +17,6 @@ import com.gomoku.game.GameProperties;
  */
 @SpringBootApplication
 @EnableMongoAuditing
-@EnableConfigurationProperties({ BoardProperties.class, GameProperties.class })
 public class FiveInARowChallengeApplication {
 
     public static void main(final String[] args) {
