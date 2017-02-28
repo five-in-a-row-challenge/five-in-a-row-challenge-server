@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gomoku.domain.board.Board;
 import com.gomoku.domain.board.BoardFieldType;
 import com.gomoku.domain.game.task.GameState;
-import com.gomoku.domain.player.Player;
+import com.gomoku.repository.entity.Player;
 
 /**
  * Gomoku game service, it is responsible for execute one match on the board by the actual state of the game and actual player.

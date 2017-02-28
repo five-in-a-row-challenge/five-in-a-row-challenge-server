@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gomoku.domain.game.Game;
-import com.gomoku.domain.history.History;
-import com.gomoku.domain.player.Player;
-import com.gomoku.domain.score.Score;
 import com.gomoku.repository.GameRepository;
 import com.gomoku.repository.HistoryRepository;
 import com.gomoku.repository.PlayerRepository;
 import com.gomoku.repository.ScoreRepository;
+import com.gomoku.repository.entity.Game;
+import com.gomoku.repository.entity.History;
+import com.gomoku.repository.entity.Player;
+import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
 
 /**

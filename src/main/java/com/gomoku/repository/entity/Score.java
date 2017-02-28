@@ -1,4 +1,4 @@
-package com.gomoku.domain.score;
+package com.gomoku.repository.entity;
 
 import org.springframework.data.annotation.Id;
 

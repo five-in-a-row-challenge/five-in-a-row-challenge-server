@@ -2,7 +2,7 @@ package com.gomoku.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.gomoku.domain.player.Player;
+import com.gomoku.repository.entity.Player;
 
 /**
  * Interface for player repository, it manages the players like create a new one, or retrieve all players.

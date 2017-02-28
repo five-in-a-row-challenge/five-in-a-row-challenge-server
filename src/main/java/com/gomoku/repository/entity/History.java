@@ -1,11 +1,11 @@
-package com.gomoku.domain.history;
+package com.gomoku.repository.entity;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.annotation.Id;
 
-import com.gomoku.domain.player.Player;
+import com.gomoku.domain.history.HistoryStep;
 
 public class History {
 

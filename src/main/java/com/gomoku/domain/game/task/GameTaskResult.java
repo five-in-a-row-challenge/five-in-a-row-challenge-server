@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gomoku.domain.history.HistoryStep;
-import com.gomoku.domain.player.Player;
+import com.gomoku.repository.entity.Player;
 
 /**
  * Result of game task. It contains the winner and the all the steps.

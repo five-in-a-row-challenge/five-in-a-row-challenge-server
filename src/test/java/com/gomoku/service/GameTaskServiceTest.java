@@ -1,4 +1,4 @@
-package com.gomoku.domain.game.task;
+package com.gomoku.service;
 
 import static com.gomoku.domain.board.BoardFieldType.NONE;
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_O;
@@ -23,20 +23,23 @@ import org.mockito.Mockito;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.gomoku.config.properties.BoardProperties;
 import com.gomoku.domain.board.Board;
 import com.gomoku.domain.board.BoardFieldType;
-import com.gomoku.domain.board.BoardProperties;
+import com.gomoku.domain.game.task.GameState;
+import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.history.HistoryStep;
-import com.gomoku.domain.player.Player;
+import com.gomoku.repository.entity.Player;
 import com.gomoku.service.GameExecutorService;
+import com.gomoku.service.GameTaskService;
 
 /**
- * Unit test for {@link GameTask}.
+ * Unit test for {@link GameTaskService}.
  *
  * @author zeldan
  *
  */
-public class GameTaskTest {
+public class GameTaskServiceTest {
 
     private static final Player FIRST_PLAYER = new Player("firstPlayer", "http://192.168.0.1:8080");
     private static final Player SECOND_PLAYER = new Player("secondPlayer", "http://192.168.0.2:9000");
@@ -49,12 +52,12 @@ public class GameTaskTest {
     @Mock
     private GameExecutorService gameService;
 
-    private GameTask underTest;
+    private GameTaskService underTest;
 
     @BeforeMethod
     public void setUp() {
         initMocks(this);
-        underTest = new GameTask(new BoardProperties(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_TWO_TO_WIN), gameService);
+        underTest = new GameTaskService(new BoardProperties(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_TWO_TO_WIN), gameService);
     }
 
     @Test

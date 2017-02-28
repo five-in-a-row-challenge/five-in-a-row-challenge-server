@@ -1,4 +1,4 @@
-package com.gomoku.domain.game.task;
+package com.gomoku.service;
 
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_X;
@@ -14,12 +14,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.gomoku.config.properties.BoardProperties;
 import com.gomoku.domain.board.Board;
 import com.gomoku.domain.board.BoardFieldType;
-import com.gomoku.domain.board.BoardProperties;
+import com.gomoku.domain.game.task.GameState;
+import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.history.HistoryStep;
-import com.gomoku.domain.player.Player;
-import com.gomoku.service.GameExecutorService;
+import com.gomoku.repository.entity.Player;
 
 /**
  * Task for playing game between two players.
@@ -28,14 +29,14 @@ import com.gomoku.service.GameExecutorService;
  *
  */
 @Component
-public class GameTask {
+public class GameTaskService {
 
     private final BoardProperties boardProperties;
 
     private final GameExecutorService gameService;
 
     @Autowired
-    public GameTask(final BoardProperties boardProperties, final GameExecutorService gameService) {
+    public GameTaskService(final BoardProperties boardProperties, final GameExecutorService gameService) {
         this.boardProperties = boardProperties;
         this.gameService = gameService;
     }

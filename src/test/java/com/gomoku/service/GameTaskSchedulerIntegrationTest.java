@@ -23,16 +23,15 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.gomoku.config.properties.GameProperties;
-import com.gomoku.domain.game.Game;
-import com.gomoku.domain.game.task.GameTask;
 import com.gomoku.domain.game.task.GameTaskResult;
-import com.gomoku.domain.history.History;
-import com.gomoku.domain.player.Player;
-import com.gomoku.domain.score.Score;
 import com.gomoku.domain.score.ScoreType;
 import com.gomoku.repository.GameRepository;
 import com.gomoku.repository.HistoryRepository;
 import com.gomoku.repository.ScoreRepository;
+import com.gomoku.repository.entity.Game;
+import com.gomoku.repository.entity.History;
+import com.gomoku.repository.entity.Player;
+import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
 
 /**
@@ -49,7 +48,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     private static final Player SECOND_PLAYER = new Player("player2", "http://localhost:8081");
 
     @Mock
-    private GameTask gameTask;
+    private GameTaskService gameTask;
 
     @Autowired
     private HistoryRepository historyRepository;

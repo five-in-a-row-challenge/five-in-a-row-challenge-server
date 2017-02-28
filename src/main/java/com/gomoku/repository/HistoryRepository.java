@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.gomoku.domain.history.History;
+import com.gomoku.repository.entity.History;
 
 /**
  * History repository to manage history entities.

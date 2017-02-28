@@ -16,16 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gomoku.config.properties.GameProperties;
-import com.gomoku.domain.game.Game;
-import com.gomoku.domain.game.task.GameTask;
 import com.gomoku.domain.game.task.GameTaskResult;
-import com.gomoku.domain.history.History;
-import com.gomoku.domain.player.Player;
-import com.gomoku.domain.score.Score;
 import com.gomoku.domain.score.ScoreType;
 import com.gomoku.repository.GameRepository;
 import com.gomoku.repository.HistoryRepository;
 import com.gomoku.repository.ScoreRepository;
+import com.gomoku.repository.entity.Game;
+import com.gomoku.repository.entity.History;
+import com.gomoku.repository.entity.Player;
+import com.gomoku.repository.entity.Score;
 
 /**
  * Scheduler service to start and schedule games between every players in the given time period.
@@ -40,7 +39,7 @@ public class GameTaskScheduler {
 
     private static final Logger LOG = getLogger(GameTaskScheduler.class);
 
-    private final GameTask gameTask;
+    private final GameTaskService gameTaskService;
 
     private final HistoryRepository historyRepository;
 
@@ -53,9 +52,9 @@ public class GameTaskScheduler {
     private final GameProperties gameProperties;
 
     @Autowired
-    public GameTaskScheduler(final GameTask gameTask, final HistoryRepository historyRepository, final ScheduledExecutorService scheduler,
+    public GameTaskScheduler(final GameTaskService gameTaskService, final HistoryRepository historyRepository, final ScheduledExecutorService scheduler,
             final GameRepository gameRepository, final ScoreRepository scoreRepository, final GameProperties gameProperties) {
-        this.gameTask = gameTask;
+        this.gameTaskService = gameTaskService;
         this.historyRepository = historyRepository;
         this.scheduler = scheduler;
         this.gameRepository = gameRepository;
@@ -87,7 +86,7 @@ public class GameTaskScheduler {
             players.forEach(playerTwo -> {
                 if (!playerOne.equals(playerTwo)) {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
-                    final GameTaskResult gameTaskResult = gameTask.matchAgainstEachOther(playerOne, playerTwo);
+                    final GameTaskResult gameTaskResult = gameTaskService.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
                     final History history = new History(gameId, round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps());
                     historyRepository.save(history);

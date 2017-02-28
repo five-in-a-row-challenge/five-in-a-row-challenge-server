@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gomoku.domain.player.Player;
 import com.gomoku.repository.PlayerRepository;
+import com.gomoku.repository.entity.Player;
 
 /**
  * Rest controller to handle players.

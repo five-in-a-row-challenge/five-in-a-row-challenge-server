@@ -1,4 +1,4 @@
-package com.gomoku.domain.player;
+package com.gomoku.repository.entity;
 
 import java.util.Objects;
 

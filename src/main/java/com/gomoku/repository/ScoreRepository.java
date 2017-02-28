@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.gomoku.domain.score.Score;
+import com.gomoku.repository.entity.Score;
 
 /**
  * History repository to manage score entities.

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.gomoku.domain.board.Board;
 import com.gomoku.domain.board.BoardFieldType;
-import com.gomoku.domain.player.Player;
+import com.gomoku.repository.entity.Player;
 
 /**
  * Actual state of the game.

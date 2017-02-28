@@ -2,7 +2,7 @@ package com.gomoku.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.gomoku.domain.game.Game;
+import com.gomoku.repository.entity.Game;
 
 /**
  * History repository to manage game entities.

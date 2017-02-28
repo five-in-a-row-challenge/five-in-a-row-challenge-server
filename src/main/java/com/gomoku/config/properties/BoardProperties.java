@@ -1,4 +1,4 @@
-package com.gomoku.domain.board;
+package com.gomoku.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

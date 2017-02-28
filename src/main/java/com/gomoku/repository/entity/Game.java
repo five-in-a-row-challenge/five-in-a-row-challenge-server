@@ -1,4 +1,4 @@
-package com.gomoku.domain.game;
+package com.gomoku.repository.entity;
 
 import static com.gomoku.domain.game.GameStatus.IN_PROGRESS;
 
@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gomoku.domain.game.GameStatus;
 
 /**
  *
