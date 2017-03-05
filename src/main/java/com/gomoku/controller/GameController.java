@@ -1,30 +1,21 @@
 package com.gomoku.controller;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingInt;
 import static org.slf4j.LoggerFactory.getLogger;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.repository.GameRepository;
-import com.gomoku.repository.HistoryRepository;
 import com.gomoku.repository.PlayerRepository;
-import com.gomoku.repository.ScoreRepository;
 import com.gomoku.repository.entity.Game;
-import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Player;
-import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
 
 /**
@@ -49,21 +40,13 @@ public class GameController {
 
     private final PlayerRepository playerRepository;
 
-    private final HistoryRepository historyRepository;
-
-    private final ScoreRepository scoreRepository;
-
-    @Autowired
-    public GameController(final GameTaskScheduler gameTaskScheduler, final GameRepository gameRepository, final PlayerRepository playerRepository,
-            final HistoryRepository historyRepository, final ScoreRepository scoreRepository) {
+    public GameController(final GameTaskScheduler gameTaskScheduler, final GameRepository gameRepository, final PlayerRepository playerRepository) {
         this.gameTaskScheduler = gameTaskScheduler;
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
-        this.historyRepository = historyRepository;
-        this.scoreRepository = scoreRepository;
     }
 
-    @RequestMapping(method = POST, value = "/start")
+    @PostMapping("/start")
     public String start() {
         final List<Player> players = playerRepository.findAll();
         if (players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {
@@ -76,20 +59,9 @@ public class GameController {
         }
     }
 
-    @RequestMapping(method = GET)
+    @GetMapping
     public List<Game> getAllGames() {
         return gameRepository.findAll();
-    }
-
-    @RequestMapping(method = GET, value = "/{gameId}/histories")
-    public List<History> getHistories(@PathVariable final String gameId) {
-        return historyRepository.findAllByGameId(gameId);
-    }
-
-    @RequestMapping(method = GET, value = "/{gameId}/scores")
-    public Map<String, Integer> getScore(@PathVariable final String gameId) {
-        final List<Score> scoresByGameId = scoreRepository.findByGameId(gameId);
-        return scoresByGameId.stream().collect(groupingBy(Score::getPlayer, summingInt(Score::getScore)));
     }
 
     private void startNewGame(final String gameId, final List<Player> players) {

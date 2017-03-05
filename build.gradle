@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.1.RELEASE'
+		springBootVersion = '1.5.2.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -12,12 +12,14 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
-	baseName = 'demo'
+	baseName = 'five-in-a-row-challenge-server'
 	version = '0.0.1-SNAPSHOT'
 }
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -26,15 +28,14 @@ repositories {
 }
 
 dependencies {
-
 	compile('io.springfox:springfox-swagger2:2.6.1')
 	compile('io.springfox:springfox-swagger-ui:2.6.1')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-configuration-processor')
-	compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.6')
+	compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.7')
 	
-	testCompile('org.testng:testng:6.10')
-	testCompile('org.mockito:mockito-core:2.7.9')
+	testCompile('org.testng:testng:6.11')
+	testCompile('org.mockito:mockito-core:2.7.13')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
