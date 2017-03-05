@@ -43,5 +43,5 @@ Start a **five-in-a-row-challenge-random-ai**, and then post two players with di
 
 ## Technology Stack
 - Java 8
-- Spring boot 1.4.2
+- Spring boot 1.5.2
 - MongoDB

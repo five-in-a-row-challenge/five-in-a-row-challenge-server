@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gomoku.config.properties.BoardProperties;
@@ -35,7 +34,6 @@ public class GameTaskService {
 
     private final GameExecutorService gameService;
 
-    @Autowired
     public GameTaskService(final BoardProperties boardProperties, final GameExecutorService gameService) {
         this.boardProperties = boardProperties;
         this.gameService = gameService;

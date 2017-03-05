@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,6 @@ public class GameExecutorService {
 
     private final RestTemplate restTemplate;
 
-    @Autowired
     public GameExecutorService(final ObjectMapper objectMapper, final RestTemplate restTemplate) {
         this.objectMapper = objectMapper;
         this.restTemplate = restTemplate;

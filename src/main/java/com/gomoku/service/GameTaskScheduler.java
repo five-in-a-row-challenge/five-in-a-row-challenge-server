@@ -12,7 +12,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gomoku.config.properties.GameProperties;
@@ -51,7 +50,6 @@ public class GameTaskScheduler {
 
     private final GameProperties gameProperties;
 
-    @Autowired
     public GameTaskScheduler(final GameTaskService gameTaskService, final HistoryRepository historyRepository, final ScheduledExecutorService scheduler,
             final GameRepository gameRepository, final ScoreRepository scoreRepository, final GameProperties gameProperties) {
         this.gameTaskService = gameTaskService;
