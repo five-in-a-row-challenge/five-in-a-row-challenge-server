@@ -1,6 +1,6 @@
 package com.gomoku.repository.entity;
 
-import static com.gomoku.domain.game.GameStatus.IN_PROGRESS;
+import static com.gomoku.domain.game.GameStatus.CREATED;
 
 import java.util.Date;
 
@@ -25,11 +25,8 @@ public class Game {
     @CreatedDate
     private Date createdDate;
 
-    private GameStatus gameStatus;
+    private GameStatus gameStatus = CREATED;
 
-    public Game() {
-        gameStatus = IN_PROGRESS;
-    }
 
     public String getId() {
         return id;
