@@ -39,7 +39,7 @@ import com.gomoku.repository.entity.Score;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = "spring.data.mongodb.database: test")
+@TestPropertySource(properties = "spring.data.mongodb.port=0")
 public class GameTaskSchedulerIntegrationTest {
 
     private static final int LENGTH_OF_ONE_ROUND_IN_MINUTES = 0;
