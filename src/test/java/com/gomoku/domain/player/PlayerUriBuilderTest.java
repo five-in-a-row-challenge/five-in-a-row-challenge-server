@@ -2,17 +2,16 @@ package com.gomoku.domain.player;
 
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_X;
 import static java.lang.String.valueOf;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 
+import org.junit.Test;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.testng.annotations.Test;
 
 import com.gomoku.domain.board.Board;
-import com.gomoku.domain.player.PlayerUriBuilder;
 
 /**
  * Unit test for {@link PlayerUriBuilder}.

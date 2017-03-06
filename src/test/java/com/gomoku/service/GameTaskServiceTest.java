@@ -5,23 +5,23 @@ import static com.gomoku.domain.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_X;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.of;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.gomoku.config.properties.BoardProperties;
 import com.gomoku.domain.board.Board;
@@ -30,8 +30,6 @@ import com.gomoku.domain.game.task.GameState;
 import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.history.HistoryStep;
 import com.gomoku.repository.entity.Player;
-import com.gomoku.service.GameExecutorService;
-import com.gomoku.service.GameTaskService;
 
 /**
  * Unit test for {@link GameTaskService}.
@@ -54,7 +52,7 @@ public class GameTaskServiceTest {
 
     private GameTaskService underTest;
 
-    @BeforeMethod
+    @Before
     public void setUp() {
         initMocks(this);
         underTest = new GameTaskService(new BoardProperties(BOARD_WIDTH, BOARD_HEIGHT, BOARD_LIMIT_TWO_TO_WIN), gameService);

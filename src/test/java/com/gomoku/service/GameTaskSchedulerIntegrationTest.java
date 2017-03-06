@@ -5,41 +5,42 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.gomoku.config.properties.GameProperties;
 import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.score.ScoreType;
 import com.gomoku.repository.GameRepository;
-import com.gomoku.repository.HistoryRepository;
-import com.gomoku.repository.ScoreRepository;
 import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Player;
 import com.gomoku.repository.entity.Score;
-import com.gomoku.service.GameTaskScheduler;
 
 /**
  * Unit test for {@link GameTaskScheduler}.
  */
+@RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(properties = "spring.data.mongodb.database: test")
-public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContextTests {
+public class GameTaskSchedulerIntegrationTest {
 
     private static final int LENGTH_OF_ONE_ROUND_IN_MINUTES = 0;
     private static final int LENGTH_OF_THE_GAME_IN_MINUTES = 0;
@@ -50,28 +51,25 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
     @Mock
     private GameTaskService gameTask;
 
-    @Autowired
-    private HistoryRepository historyRepository;
-
-    @Autowired
+    @Mock
     private ScheduledExecutorService scheduler;
+
+    @Mock
+    private ScheduledFuture<?> future;
 
     @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
-    private ScoreRepository scoreRepository;
-
     private GameTaskScheduler underTest;
 
-    @BeforeMethod
+    @Before
     public void setUp() {
         initMocks(this);
-        underTest = new GameTaskScheduler(gameTask, historyRepository, scheduler, gameRepository, scoreRepository,
+        underTest = new GameTaskScheduler(gameTask, scheduler, gameRepository,
                 new GameProperties(LENGTH_OF_ONE_ROUND_IN_MINUTES, LENGTH_OF_THE_GAME_IN_MINUTES));
-        historyRepository.deleteAll();
-        scoreRepository.deleteAll();
         gameRepository.deleteAll();
+        doReturn(future).when(scheduler).schedule(Mockito.any(Runnable.class), Mockito.anyLong(), Mockito.any());
+        when(future.isDone()).thenReturn(false, true);
     }
 
     @Test
@@ -100,7 +98,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
         underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
 
         // THEN
-        final List<History> histories = historyRepository.findAll();
+        final List<History> histories = gameRepository.findOne(savedGame.getId()).getHistories();
         assertEquals(histories.size(), 2);
     }
 
@@ -132,7 +130,7 @@ public class GameTaskSchedulerIntegrationTest extends AbstractTestNGSpringContex
         underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
 
         // THEN
-        final List<Score> scores = scoreRepository.findAll();
+        final List<Score> scores = gameRepository.findOne(savedGame.getId()).getScores();
         assertEquals(scores.size(), 2);
         assertEquals(scores.get(0).getPlayer(), FIRST_PLAYER.getUserName());
         assertEquals(scores.get(0).getScore(), ScoreType.VICTORY.getScore());

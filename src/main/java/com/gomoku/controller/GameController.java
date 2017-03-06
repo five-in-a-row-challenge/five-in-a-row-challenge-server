@@ -1,8 +1,11 @@
 package com.gomoku.controller;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +19,9 @@ import com.gomoku.domain.game.GameStatus;
 import com.gomoku.repository.GameRepository;
 import com.gomoku.repository.PlayerRepository;
 import com.gomoku.repository.entity.Game;
+import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Player;
+import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
 
 /**
@@ -68,6 +73,17 @@ public class GameController {
     @GetMapping
     public List<Game> getAllGames() {
         return gameRepository.findAll();
+    }
+
+    @GetMapping("/{gameId}/scores")
+    public Map<String, Integer> getScore(@PathVariable final String gameId) {
+        final List<Score> scoresByGameId = gameRepository.findOne(gameId).getScores();
+        return scoresByGameId.stream().collect(groupingBy(Score::getPlayer, summingInt(Score::getScore)));
+    }
+
+    @GetMapping("/{gameId}/histories")
+    public List<History> getHistories(@PathVariable final String gameId) {
+        return gameRepository.findOne(gameId).getHistories();
     }
 
     private void startNewGame(final String gameId, final List<Player> players) {

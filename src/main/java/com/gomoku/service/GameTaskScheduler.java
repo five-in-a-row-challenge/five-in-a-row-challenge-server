@@ -18,8 +18,6 @@ import com.gomoku.config.properties.GameProperties;
 import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.score.ScoreType;
 import com.gomoku.repository.GameRepository;
-import com.gomoku.repository.HistoryRepository;
-import com.gomoku.repository.ScoreRepository;
 import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Player;
@@ -40,23 +38,17 @@ public class GameTaskScheduler {
 
     private final GameTaskService gameTaskService;
 
-    private final HistoryRepository historyRepository;
-
     private final ScheduledExecutorService scheduler;
 
     private final GameRepository gameRepository;
 
-    private final ScoreRepository scoreRepository;
-
     private final GameProperties gameProperties;
 
-    public GameTaskScheduler(final GameTaskService gameTaskService, final HistoryRepository historyRepository, final ScheduledExecutorService scheduler,
-            final GameRepository gameRepository, final ScoreRepository scoreRepository, final GameProperties gameProperties) {
+    public GameTaskScheduler(final GameTaskService gameTaskService, final ScheduledExecutorService scheduler,
+            final GameRepository gameRepository, final GameProperties gameProperties) {
         this.gameTaskService = gameTaskService;
-        this.historyRepository = historyRepository;
         this.scheduler = scheduler;
         this.gameRepository = gameRepository;
-        this.scoreRepository = scoreRepository;
         this.gameProperties = gameProperties;
     }
 
@@ -64,20 +56,20 @@ public class GameTaskScheduler {
 
         final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), gameProperties.getLengthOfTheGameInMinutes(), MINUTES);
         int round = 1;
+        final Game game = gameRepository.findOne(gameId);
         while (!countdown.isDone()) {
             try {
-                startRound(gameId, round++, players);
+                startRound(game, round++, players);
                 sleep(gameProperties.getLengthOfOneRoundInMinutes() * ONE_MINUTE_IN_MILLISEC);
             } catch (final InterruptedException e) {
                 LOG.warn("The game is interrupted.");
             }
         }
-        final Game game = gameRepository.findOne(gameId);
         game.setGameStatus(FINISHED);
         gameRepository.save(game);
     }
 
-    private void startRound(final String gameId, final int round, final List<Player> players) {
+    private void startRound(final Game game, final int round, final List<Player> players) {
         LOG.info("The round '{}' is started.", round);
         final AtomicInteger gameNr = new AtomicInteger(1);
         players.forEach(playerOne -> {
@@ -86,18 +78,17 @@ public class GameTaskScheduler {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTaskService.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
-                    final History history = new History(gameId, round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps());
-                    historyRepository.save(history);
+                    game.addHistory(new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps()));
                     if (winner.isPresent()) {
-                        scoreRepository.save(new Score(gameId, round, gameNr.get(), winner.get().getUserName(), ScoreType.VICTORY.getScore()));
+                        game.addScore(new Score(round, gameNr.get(), winner.get().getUserName(), ScoreType.VICTORY.getScore()));
                         LOG.info("------ The winner is: " + winner.get().getUserName());
                     } else {
                         final int scoreOfDraw = ScoreType.DRAW.getScore();
-                        scoreRepository.save(new Score(gameId, round, gameNr.get(), playerOne.getUserName(), scoreOfDraw));
-                        scoreRepository.save(new Score(gameId, round, gameNr.get(), playerTwo.getUserName(), scoreOfDraw));
+                        game.addScore(new Score(round, gameNr.get(), playerOne.getUserName(), scoreOfDraw));
+                        game.addScore(new Score(round, gameNr.get(), playerTwo.getUserName(), scoreOfDraw));
                         LOG.info("------ The game is draw.");
                     }
-                    LOG.info("------ The id of history is: " + history.getId());
+                    gameRepository.save(game);
                 }
             });
         });

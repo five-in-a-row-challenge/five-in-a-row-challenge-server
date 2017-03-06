@@ -2,11 +2,11 @@ package com.gomoku.domain.board;
 
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_X;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * Unit test for {@link Board}.

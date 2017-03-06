@@ -2,33 +2,30 @@ package com.gomoku.service;
 
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_O;
 import static com.gomoku.domain.board.BoardFieldType.PLAYER_X;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.OK;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
-import org.springframework.http.HttpEntity;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gomoku.domain.board.Board;
 import com.gomoku.domain.board.BoardFieldType;
 import com.gomoku.domain.game.task.GameState;
 import com.gomoku.repository.entity.Player;
-import com.gomoku.service.GameExecutorService;
 
 /**
  * Unit test for {@link GameExecutorService}.
@@ -48,7 +45,7 @@ public class GameExecutorServiceTest {
 
     private GameExecutorService underTest;
 
-    @BeforeMethod
+    @Before
     public void setUp() {
         initMocks(this);
         underTest = new GameExecutorService(new ObjectMapper(), restTemplateMock);
@@ -58,7 +55,7 @@ public class GameExecutorServiceTest {
     public void shouldMoveToNextGameStateByUserResponse() {
         // GIVEN
         final ResponseEntity<String> userAnswerResponse = createUserAnswerResponse(COLUMN_NUMBER_TO_MARK, ROW_NUMBER_TO_MARK);
-        when(restTemplateMock.exchange(any(URI.class), eq(GET), any(HttpEntity.class), eq(String.class)))
+        when(restTemplateMock.exchange(any(RequestEntity.class), eq(String.class)))
                 .thenReturn(userAnswerResponse);
         final Map<BoardFieldType, Player> players = initPlayers();
         final GameState previousGameState = new GameState(players, new Board(3, 3, 3));
