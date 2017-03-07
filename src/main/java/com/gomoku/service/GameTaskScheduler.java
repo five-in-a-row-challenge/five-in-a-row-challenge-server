@@ -78,7 +78,8 @@ public class GameTaskScheduler {
                     LOG.info("--- Player '{}' versus Player '{}'", playerOne.getUserName(), playerTwo.getUserName());
                     final GameTaskResult gameTaskResult = gameTaskService.matchAgainstEachOther(playerOne, playerTwo);
                     final Optional<Player> winner = gameTaskResult.getWinner();
-                    game.addHistory(new History(round, gameNr.getAndIncrement(), playerOne, playerTwo, winner, gameTaskResult.getSteps()));
+                    game.addHistory(new History(round, gameNr.getAndIncrement(), playerOne.getUserName(), playerTwo.getUserName(), getWinnerPlayerId(winner),
+                            gameTaskResult.getSteps()));
                     if (winner.isPresent()) {
                         game.addScore(new Score(round, gameNr.get(), winner.get().getUserName(), ScoreType.VICTORY.getScore()));
                         LOG.info("------ The winner is: " + winner.get().getUserName());
@@ -92,6 +93,13 @@ public class GameTaskScheduler {
                 }
             });
         });
+    }
+
+    private Optional<String> getWinnerPlayerId(final Optional<Player> player) {
+        if (player.isPresent()) {
+            return Optional.of(player.get().getUserName());
+        }
+        return Optional.empty();
     }
 
 }

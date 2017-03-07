@@ -1,7 +1,7 @@
 package com.gomoku.repository.entity;
 
 /**
- * Score entity
+ * Immutable class to store Score.
  *
  * @author zeldan
  *

@@ -1,30 +1,37 @@
 package com.gomoku.repository.entity;
 
+import static java.util.Collections.unmodifiableList;
+
 import java.util.List;
 import java.util.Optional;
 
 import com.gomoku.domain.history.HistoryStep;
 
+/**
+ * Immutable class to store history.
+ *
+ * @author zeldan
+ */
 public class History {
 
     private final int round;
 
     private final int gameNumber;
 
-    private final Player firstPlayer;
+    private final String firstPlayerId;
 
-    private final Player secondPlayer;
+    private final String secondPlayerId;
 
-    private final Optional<Player> winner;
+    private final Optional<String> winner;
 
     private final List<HistoryStep> steps;
 
-    public History(final int round, final int gameNumber, final Player firstPlayer, final Player secondPlayer, final Optional<Player> winner,
+    public History(final int round, final int gameNumber, final String firstPlayerId, final String secondPlayerId, final Optional<String> winner,
             final List<HistoryStep> steps) {
         this.round = round;
         this.gameNumber = gameNumber;
-        this.firstPlayer = firstPlayer;
-        this.secondPlayer = secondPlayer;
+        this.firstPlayerId = firstPlayerId;
+        this.secondPlayerId = secondPlayerId;
         this.winner = winner;
         this.steps = steps;
     }
@@ -37,20 +44,20 @@ public class History {
         return gameNumber;
     }
 
-    public Player getFirstPlayer() {
-        return firstPlayer;
+    public String getFirstPlayerId() {
+        return firstPlayerId;
     }
 
-    public Player getSecondPlayer() {
-        return secondPlayer;
+    public String getSecondPlayerId() {
+        return secondPlayerId;
     }
 
-    public Optional<Player> getWinner() {
+    public Optional<String> getWinner() {
         return winner;
     }
 
     public List<HistoryStep> getSteps() {
-        return steps;
+        return unmodifiableList(steps);
     }
 
 }
