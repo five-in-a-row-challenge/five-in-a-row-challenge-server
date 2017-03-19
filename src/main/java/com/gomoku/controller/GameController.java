@@ -6,6 +6,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -62,6 +63,7 @@ public class GameController {
         if (players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {
             final Game game = gameRepository.findOne(gameId);
             game.setGameStatus(GameStatus.IN_PROGRESS);
+            game.setPlayers(players.stream().map(Player::getUserName).collect(Collectors.toList()));
             gameRepository.save(game);
             startNewGame(gameId, players);
             return "IN_PROGRESS";

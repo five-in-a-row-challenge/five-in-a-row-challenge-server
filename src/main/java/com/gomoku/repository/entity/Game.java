@@ -33,6 +33,8 @@ public class Game {
     private final List<Score> scores = new ArrayList<>();
 
     private GameStatus gameStatus = CREATED;
+    
+    private List<String> players;
 
     public String getId() {
         return id;
@@ -51,7 +53,15 @@ public class Game {
         return gameStatus;
     }
 
-    @JsonIgnore
+    public List<String> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<String> players) {
+		this.players = players;
+	}
+
+	@JsonIgnore
     public List<History> getHistories() {
         return histories;
     }
