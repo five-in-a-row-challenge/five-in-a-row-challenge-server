@@ -2,13 +2,11 @@ package com.gomoku.controller;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingInt;
-import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +33,6 @@ import com.gomoku.service.GameTaskScheduler;
 @RequestMapping("/api/games")
 @RestController
 public class GameController {
-
-    private static final Logger LOG = getLogger(GameController.class);
 
     private static final int MINIMUM_PLAYER_NUMBER_TO_START = 2;
 
@@ -75,6 +71,11 @@ public class GameController {
     @GetMapping
     public List<Game> getAllGames() {
         return gameRepository.findAll();
+    }
+
+    @GetMapping("/{gameId}")
+    public Game getGame(@PathVariable final String gameId) {
+        return gameRepository.findOne(gameId);
     }
 
     @GetMapping("/{gameId}/scores")
