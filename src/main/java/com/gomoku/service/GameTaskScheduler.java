@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import com.gomoku.config.properties.GameProperties;
 import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.score.ScoreType;
 import com.gomoku.repository.GameRepository;
+import com.gomoku.repository.PlayerRepository;
 import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Player;
@@ -44,19 +46,23 @@ public class GameTaskScheduler {
 
     private final GameProperties gameProperties;
 
+    private final PlayerRepository playerRepository;
+
     public GameTaskScheduler(final GameTaskService gameTaskService, final ScheduledExecutorService scheduler,
-            final GameRepository gameRepository, final GameProperties gameProperties) {
+            final GameRepository gameRepository, final PlayerRepository playerRepository, final GameProperties gameProperties) {
         this.gameTaskService = gameTaskService;
         this.scheduler = scheduler;
         this.gameRepository = gameRepository;
         this.gameProperties = gameProperties;
+        this.playerRepository = playerRepository;
     }
 
-    public void startAndScheduleGames(final String gameId, final List<Player> players) {
+    public void startAndScheduleGames(final String gameId) {
 
         final ScheduledFuture<?> countdown = scheduler.schedule(() -> LOG.info("Out of time!"), gameProperties.getLengthOfTheGameInMinutes(), MINUTES);
         int round = 1;
         final Game game = gameRepository.findOne(gameId);
+        final List<Player> players = game.getPlayers().stream().map(e -> playerRepository.findOne(e)).collect(Collectors.toList());
         while (!countdown.isDone()) {
             try {
                 startRound(game, round++, players);

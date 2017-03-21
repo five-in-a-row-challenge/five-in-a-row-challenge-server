@@ -65,7 +65,7 @@ public class GameController {
             game.setGameStatus(GameStatus.IN_PROGRESS);
             game.setPlayers(players.stream().map(Player::getUserName).collect(Collectors.toList()));
             gameRepository.save(game);
-            startNewGame(gameId, players);
+            startNewGame(gameId);
             return "IN_PROGRESS";
         } else {
             throw new RuntimeException("Minimum number of players is 2.");
@@ -88,9 +88,9 @@ public class GameController {
         return gameRepository.findOne(gameId).getHistories();
     }
 
-    private void startNewGame(final String gameId, final List<Player> players) {
+    private void startNewGame(final String gameId) {
         new Thread(() -> {
-            gameTaskScheduler.startAndScheduleGames(gameId, players);
+            gameTaskScheduler.startAndScheduleGames(gameId);
         }).start();
     }
 }

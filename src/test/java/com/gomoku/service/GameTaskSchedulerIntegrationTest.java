@@ -1,7 +1,6 @@
 package com.gomoku.service;
 
 import static com.gomoku.domain.game.GameStatus.FINISHED;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
@@ -11,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -29,6 +29,7 @@ import com.gomoku.config.properties.GameProperties;
 import com.gomoku.domain.game.task.GameTaskResult;
 import com.gomoku.domain.score.ScoreType;
 import com.gomoku.repository.GameRepository;
+import com.gomoku.repository.PlayerRepository;
 import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Player;
@@ -57,6 +58,9 @@ public class GameTaskSchedulerIntegrationTest {
     @Mock
     private ScheduledFuture<?> future;
 
+    @Mock
+    private PlayerRepository playerRepository;
+
     @Autowired
     private GameRepository gameRepository;
 
@@ -65,22 +69,24 @@ public class GameTaskSchedulerIntegrationTest {
     @Before
     public void setUp() {
         initMocks(this);
-        underTest = new GameTaskScheduler(gameTask, scheduler, gameRepository,
+        underTest = new GameTaskScheduler(gameTask, scheduler, gameRepository, playerRepository,
                 new GameProperties(LENGTH_OF_ONE_ROUND_IN_MINUTES, LENGTH_OF_THE_GAME_IN_MINUTES));
         gameRepository.deleteAll();
         doReturn(future).when(scheduler).schedule(Mockito.any(Runnable.class), Mockito.anyLong(), Mockito.any());
         when(future.isDone()).thenReturn(false, true);
+        when(playerRepository.findOne("player1")).thenReturn(FIRST_PLAYER);
+        when(playerRepository.findOne("player2")).thenReturn(SECOND_PLAYER);
     }
 
     @Test
     public void shoudPlayMatchToEveryOneWithEveryOne() {
         // GIVEN
-        final Game savedGame = gameRepository.save(new Game());
+        final Game savedGame = gameRepository.save(createDummyGame());
         final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
 
         // WHEN
-        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
+        underTest.startAndScheduleGames(savedGame.getId());
 
         // THEN
         verify(gameTask).matchAgainstEachOther(FIRST_PLAYER, SECOND_PLAYER);
@@ -90,12 +96,12 @@ public class GameTaskSchedulerIntegrationTest {
     @Test
     public void shouldStoreHistoryAfterGame() {
         // GIVEN
-        final Game savedGame = gameRepository.save(new Game());
+        final Game savedGame = gameRepository.save(createDummyGame());
         final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
 
         // WHEN
-        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
+        underTest.startAndScheduleGames(savedGame.getId());
 
         // THEN
         final List<History> histories = gameRepository.findOne(savedGame.getId()).getHistories();
@@ -105,12 +111,12 @@ public class GameTaskSchedulerIntegrationTest {
     @Test
     public void shouldSetGameStatusToFinishedAfterGame() {
         // GIVEN
-        final Game savedGame = gameRepository.save(new Game());
+        final Game savedGame = gameRepository.save(createDummyGame());
         final GameTaskResult anyGameTaskResult = new GameTaskResult(ofNullable(null), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class))).thenReturn(anyGameTaskResult);
 
         // WHEN
-        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
+        underTest.startAndScheduleGames(savedGame.getId());
 
         // THEN
         final Game actualGame = gameRepository.findOne(savedGame.getId());
@@ -120,14 +126,14 @@ public class GameTaskSchedulerIntegrationTest {
     @Test
     public void shouldFirstPlayerGetTwoWinnerScores() {
         // GIVEN
-        final Game savedGame = gameRepository.save(new Game());
+        final Game savedGame = gameRepository.save(createDummyGame());
         final GameTaskResult anyGameTaskResult = new GameTaskResult(of(FIRST_PLAYER), emptyList());
         when(gameTask.matchAgainstEachOther(Mockito.any(Player.class), Mockito.any(Player.class)))
                 .thenReturn(anyGameTaskResult)
                 .thenReturn(anyGameTaskResult);
 
         // WHEN
-        underTest.startAndScheduleGames(savedGame.getId(), asList(FIRST_PLAYER, SECOND_PLAYER));
+        underTest.startAndScheduleGames(savedGame.getId());
 
         // THEN
         final List<Score> scores = gameRepository.findOne(savedGame.getId()).getScores();
@@ -136,5 +142,11 @@ public class GameTaskSchedulerIntegrationTest {
         assertEquals(scores.get(0).getScore(), ScoreType.VICTORY.getScore());
         assertEquals(scores.get(1).getPlayer(), FIRST_PLAYER.getUserName());
         assertEquals(scores.get(1).getScore(), ScoreType.VICTORY.getScore());
+    }
+
+    private Game createDummyGame() {
+        final Game game = new Game();
+        game.setPlayers(Arrays.asList("player1", "player2"));
+        return game;
     }
 }
