@@ -5,21 +5,19 @@ import static java.util.stream.Collectors.summingInt;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gomoku.domain.game.GameStatus;
 import com.gomoku.repository.GameRepository;
-import com.gomoku.repository.PlayerRepository;
 import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
-import com.gomoku.repository.entity.Player;
 import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
 
@@ -40,12 +38,9 @@ public class GameController {
 
     private final GameRepository gameRepository;
 
-    private final PlayerRepository playerRepository;
-
-    public GameController(final GameTaskScheduler gameTaskScheduler, final GameRepository gameRepository, final PlayerRepository playerRepository) {
+    public GameController(final GameTaskScheduler gameTaskScheduler, final GameRepository gameRepository) {
         this.gameTaskScheduler = gameTaskScheduler;
         this.gameRepository = gameRepository;
-        this.playerRepository = playerRepository;
     }
 
     @PostMapping
@@ -55,17 +50,23 @@ public class GameController {
 
     @PostMapping("/{gameId}/start")
     public String start(@PathVariable final String gameId) {
-        final List<Player> players = playerRepository.findAll();
+        final Game game = gameRepository.findOne(gameId);
+        final List<String> players = game.getPlayers();
         if (players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {
-            final Game game = gameRepository.findOne(gameId);
             game.setGameStatus(GameStatus.IN_PROGRESS);
-            game.setPlayers(players.stream().map(Player::getUserName).collect(Collectors.toList()));
             gameRepository.save(game);
             startNewGame(gameId);
             return "IN_PROGRESS";
         } else {
             throw new RuntimeException("Minimum number of players is 2.");
         }
+    }
+
+    @PostMapping("/{gameId}/players")
+    public void setPlayers(@PathVariable final String gameId, @RequestBody final List<String> playerIds) {
+        final Game game = gameRepository.findOne(gameId);
+        game.setPlayers(playerIds);
+        gameRepository.save(game);
     }
 
     @GetMapping
