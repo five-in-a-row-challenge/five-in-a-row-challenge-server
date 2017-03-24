@@ -20,6 +20,7 @@ import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
+import com.gomoku.service.exception.MinimumPlayerViolationException;
 
 /**
  * Rest controller to handle game actions.
@@ -44,21 +45,20 @@ public class GameController {
     }
 
     @PostMapping
-    public String createGame() {
-        return gameRepository.save(new Game()).getId();
+    public Game createGame() {
+        return gameRepository.save(new Game());
     }
 
     @PostMapping("/{gameId}/start")
-    public String start(@PathVariable final String gameId) {
+    public void start(@PathVariable final String gameId) {
         final Game game = gameRepository.findOne(gameId);
         final List<String> players = game.getPlayers();
-        if (players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {
+        if (players != null && players.size() >= MINIMUM_PLAYER_NUMBER_TO_START) {
             game.setGameStatus(GameStatus.IN_PROGRESS);
             gameRepository.save(game);
             startNewGame(gameId);
-            return "IN_PROGRESS";
         } else {
-            throw new RuntimeException("Minimum number of players is 2.");
+            throw new MinimumPlayerViolationException();
         }
     }
 
