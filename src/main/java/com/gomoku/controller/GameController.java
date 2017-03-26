@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gomoku.controller.exception.MinimumPlayerViolationException;
 import com.gomoku.domain.game.GameStatus;
 import com.gomoku.repository.GameRepository;
 import com.gomoku.repository.entity.Game;
 import com.gomoku.repository.entity.History;
 import com.gomoku.repository.entity.Score;
 import com.gomoku.service.GameTaskScheduler;
-import com.gomoku.service.exception.MinimumPlayerViolationException;
 
 /**
  * Rest controller to handle game actions.

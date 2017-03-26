@@ -1,4 +1,4 @@
-package com.gomoku.service.exception;
+package com.gomoku.controller.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
